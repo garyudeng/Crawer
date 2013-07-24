@@ -4,4 +4,7 @@
 *.jar
 *.war
 *.ear
+<<<<<<< HEAD
 /build
+=======
+>>>>>>> branch 'master' of https://github.com/cncduLee/bimoku.git
