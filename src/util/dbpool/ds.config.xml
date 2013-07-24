@@ -1,0 +1,29 @@
+<ds-config>
+	<pool>
+		<type>mysql</type>
+		<name>user</name>
+		<driver>com.mysql.jdbc.driver</driver>
+		<url>jdbc:mysql://localhost:3306/user</url>
+		<username>sa</username>
+		<password>123456</password>
+		<maxconn>100</maxconn>
+	</pool>
+	<pool>
+		<type>mysql</type>
+		<name>user2</name>
+		<driver>com.mysql.jdbc.driver</driver>
+		<url>jdbc:mysql://localhost:3306/user2</url>
+		<username>sa</username>
+		<password>1234</password>
+		<maxconn>10</maxconn>
+	</pool>
+	<pool>
+		<type>sql2000</type>
+		<name>books</name>
+		<driver>com.microsoft.sqlserver.driver</driver>
+		<url>jdbc:sqlserver://localhost:1433/books:databasename=books</url>
+		<username>sa</username>
+		<password></password>
+		<maxconn>100</maxconn>
+	</pool>
+</ds-config>

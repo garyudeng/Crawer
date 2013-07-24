@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<title></title>
+<base id="base_href" />
+<script src="js/base.js"></script>
+<script src="js/jquery-1.10.1.min.js"></script>
+<script>
+	var _base_href = document.getElementById("base_href");
+	_base_href.href = getRootPath();
+	alert(_base_href.href+"/");
+</script>
+<script>
+	$.ajax({
+		type : "get",
+		url : getRootPath() + "/service/rest/hello",
+		beforeSend : function(XMLHttpRequest) {
+			//ShowLoading();
+		},
+		success : function(data, textStatus) {
+			alert(data);
+		},
+		complete : function(XMLHttpRequest, textStatus) {
+			//HideLoading();
+		},
+		error : function() {
+		}
+	});
+</script>
+</head>
+<body>
+
+
+
+
+</body>
+</html>
