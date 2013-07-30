@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="UserInfo")
 public class User implements Serializable {
-
 	/**
 	 * 
 	 */
