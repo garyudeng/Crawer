@@ -1,19 +1,26 @@
 package bean;
 
+/***************************************
+File Name：图书
+Author:孙武斌
+Last Modified Time: 2013/07/30
+Utility:Bean
+***************************************/
+
 public class Book {
-	private int id;
-	private String uuId;
-	private String bookName;
-	private String author;
-	private String translAtors;
-	private String press;
-	private String version;
-	private String isbn;
-	private String outline;
-	private Integer wantRead;
-	private Integer reading;
-	private Integer read;
-	private String directory;
+	private int id;//主键
+	private String uuId;//UUID
+	private String bookName;//图书名
+	private String author;//作者
+	private String translAtors;//译者
+	private String press;//出版社
+	private String version;//版本
+	private String isbn;//图书编号
+	private String outline;//图书概述
+	private Integer wantRead;//想读人数
+	private Integer reading;//在读人数
+	private Integer read;//读过人数
+	private String directory;//目录
 	public int getId() {
 		return id;
 	}
