@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* author:LvBin QQ:286504720 reg 注册样式表 */
+body{ background:#454545;}
+.W890{ width:890px; margin:0 auto;}
+.reg_logo{ width:186px; margin:0 auto; padding:30px;}
+.reg_fg{ background:url(../images/t.gif) repeat-x; height:4px;}
+.other_reg,.reg_step{ padding:20px 0; width:672px; margin:0 auto; clear:both;}
+.other_reg ul{ background:url(../images/other_reg.gif) no-repeat; width:576px; height:135px; margin-left:50px;}
+.other_reg ul li{ float:left; width:250px; padding:8px 10px; height:45px; margin:0 16px 12px 0;}
+.other_reg ul li a{ display:block; width:250px; height:45px;}
+.other_reg h2,.reg_step h2{ font:24px/30px "微软雅黑"; color:#fff; margin-bottom:30px;}
+.reg_step ul{ padding-left:115px;}
+.reg_step ul li{ margin-bottom:10px; width:346px; height:54px; background-repeat:no-repeat; padding-left:56px;}
+.reg_step ul li.use_reg{ background-image:url(../images/user_input.gif);}
+.reg_step ul li.email_reg{ background-image:url(../images/email_input.gif);}
+.reg_step ul li.pass_reg{ background-image:url(../images/pass_input.gif);}
+.reg_step ul li .text{ height:44px; margin-top:6px; width:340px; font:24px/36px "微软雅黑"; color:#c1c9d0; border:none 0;}
+.reg_step h4{ margin:16px 0 16px 115px; background:url(../images/check.gif) no-repeat; padding-left:28px; height:24px; clear:both; font:18px/24px "微软雅黑"; color:#fff;}
+.reg_step h4 a{ color:#4b88c3;}
+.reg_step .reg_btn{ margin-left:115px; background:url(../images/reg_btn.gif) no-repeat; width:132px; height:46px; border:none 0;}
+

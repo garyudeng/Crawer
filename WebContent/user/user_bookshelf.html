@@ -1,0 +1,842 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户主页_书架</title>
+<link href="../css/common.css" rel="stylesheet" type="text/css" />
+<link href="../css/user_bookshelf.css" rel="stylesheet" type="text/css" />
+<script src="../js/jQuery-1.7.2.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="../js/user.js"></script>
+</head>
+
+<body>
+<div id="warp">
+    <div id="top">
+    	<div class="top_con">
+            <div id="logo"><a href="#"><img src="../images/logo.gif" width="93" height="42" alt="" /></a></div>
+            <div class="nav">
+                <ul>
+                    <li class="class">
+                    	<a href="#">书城</a>
+                        <dl class="sc_dlist">
+                        	<dd><a href="#">新书</a></dd>
+                            <dd><a href="#">特价</a></dd>
+                            <dd><a href="#">搜索排行榜</a></dd>
+                            <dd><a href="#">销售排行榜</a></dd>
+                        </dl>
+                    </li>
+                    <li><a href="#">兴趣</a></li>
+                    <li><a href="../user_bookshelf.html">书架</a></li>
+                    <li><a href="../user_index.html">社交网络</a></li>
+                </ul>
+            </div>
+            <div class="search">
+                <input type="text" class="search_text" /> <input type="button" class="search_btn" />
+            </div>
+            <div class="top_info">
+                <span class="name"><em class="drop"></em><a href="#">赵晓临</a></span>
+                <span class="change"></span>
+                <span class="mail">
+                	<div class="mail_drop">
+                    	<div class="drop_mail"></div>
+                        <div class="drop_list">
+                            <ul class="tz">
+                                <li>五条系统通知，<a href="#">查看消息</a></li>
+                            </ul>
+                            <ul class="ck">
+                                <li><a href="#">查看私信</a></li>
+                                <li><a href="#">查看@我</a></li>
+                                <li><a href="#">查看评论</a></li>
+                                <li><a href="#">系统通知</a>（5）</li>
+                            </ul>
+                            <ul class="fsx">
+                                <li><a href="#">发私信</a></li>
+                            </ul>
+                         </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+	<div id="layout" class="fn-clear">
+    	<div class="person_info">
+        	<div class="img">
+            	<img src="../images/photo2.gif" width="180" height="180" alt="" />
+            </div>
+            <div class="info_co">
+            	<h1><a href="#">孙陶然</a></h1>
+                <h3><a href="#">http://ziyunwan.com/83901069856</a></h3>
+                <h4>位置：家在北京朝阳，现在北京朝阳</h4>
+                <p>状态：世界真大，我们相遇...</p>
+                <div class="info_btn_cont">
+                	<input type="button" value="私信"  class="info_btn sx"/>
+                    <div class="sixin">
+                    	<h2><span class="close"></span>发私信</h2>
+                        <label>
+                        	<span class="fn-left">发给：</span>
+                            <div class="drop_sx">
+                            	<span class="more_d"></span>
+                        		<div class="sx_name"><img src="../images/photo2.gif" width="24" height="24" />孙陶然</div>
+                            </div>
+                        </label>
+                        <label>
+                        	<span class="fn-left">内容：</span><textarea name="" cols="" rows="" class="sixin_text"></textarea>
+                        </label>
+                        <label><input type="button" class="fs" /></label>
+                    </div>
+                    <input type="button" value="@"  class="info_btn sp"/>
+                    <div class="speak">
+                    	<h2><span class="close"></span>快来说点什么吧...</h2>
+                        <h4>还可以输入123个字</h4>
+                        <textarea name="" cols="" rows="" class="speak_text"></textarea>
+                        <div class="speak_fb">
+                        	<div class="fs"></div>
+                            <ul>
+                            	<li><a href="#"></a></li>
+                                <li><a href="#"></a></li>
+                                <li><a href="#"></a></li>
+                                <li><a href="#"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="person_gz">
+            	<div class="gz_btn_cont"><input class="gz_btn" type="button" /></div>
+                <ul class="gz_list">
+                	<li><a href="#"><span class="num">566</span>消息</a></li>
+                    <li><a href="../user_attention.html"><span class="num">1244</span>关注</a></li>
+                    <li><a href="#"><span class="num">78</span>粉丝</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="ul_btn">
+        	<ul>
+            	<li><a href="../user_homePage.html" class="hover">动态</a></li>
+                <li><a href="#">书架</a></li>
+                <li><a href="#" class="pl">喜欢</a></li>
+                <li><a href="#">搜过</a></li>
+            </ul>
+        </div>
+        <div class="main">
+        	<div class="sidebar">
+            	<dl class="book_class">
+                	<dt>图书（382）</dt>
+                    <dd><a href="#">在读（38）</a></dd>
+                    <dd><a href="#">想读（89）</a></dd>
+                    <dd><a href="#">已读（76）</a></dd>
+                    <dd><a href="#">其他（179）</a></dd>
+                </dl>
+                <div class="common_interest">
+                	<a href="#">共同兴趣（38）</a>
+                </div>
+                <div class="book_book">
+                	<h2 class="title"><a href="#">书签</a></h2>
+                    <ul class="book_list">
+                    	<li><em></em><a href="#">管理（38)</a></li>
+                        <li><em></em><a href="#">历史（38）</a></li>
+                        <li><em></em><a href="#">文学（38）</a></li>
+                        <li><em></em><a href="#">管理（38</a></li>
+                        <li><em></em><a href="#">历史（38）</a></li>
+                        <li><em></em><a href="#">文学（38）</a></li>
+                        <li><em></em><a href="#">管理（38</a></li>
+                        <li><em></em><a href="#">历史（38）</a></li>
+                        <li><em></em><a href="#">文学（38）</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="main_con">
+            	<div class="con_top">
+                	<div class="read_select">
+                    	<h5><em class="s"></em>已读</h5>
+                        <div class="fn-hide yc">
+                        <div class="read_select_con">
+                        	<ul>
+                            	<li><a href="#">图书（382）</a></li>
+                                <li><a href="#">在读（38）</a></li>
+                                <li><a href="#">想读（89）</a></li>
+                                <li><a href="#">其他（179）</a></li>
+                            </ul>
+                            
+                        </div>
+                        <div class="read_s_shadow"></div>
+                        </div>
+                    </div>
+                    <div class="read_choose">
+						<ul>
+                        	<li><em></em><a href="#">设计</a></li>
+                            <li><em></em><a href="#">设计</a></li>
+                            <li><em></em><a href="#">设计</a></li>
+                        </ul>
+                    </div>
+                    <span>68本</span>
+                </div>
+                <div class="con_list">
+                	<div class="col">
+                    	<ul>
+                        	<li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                    	<ul>
+                        	<li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                    	<ul>
+                        	<li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="button" class="text" />
+                                          <input type="button" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                            <li>
+                            	<a href="#"><img src="../images/img3.gif" width="140" height="196" alt="" /></a>
+                                <span class="book_info">
+                                      <h2><a href="#">上面好安静</a></h2>
+                                      <h3><span class="yizhe fn-right">译者：<a href="#">周林</a></span>作者：【荷兰】<a href="#">比克</a></h3>
+                                      <h3>出版社：<a href="#">人们出版社</a></h3>
+                                      <h4>定价：30元</h4>
+                                      <p>
+                                      《故事发生在荷兰的乡间。亨克和赫尔默是一对双胞胎兄
+弟，弟弟亨克勤于农活，深受父亲欢心，哥哥赫尔默不喜
+欢农场，渴望去城市生活，因此与父亲关系疏远。谁料，
+年轻的弟弟在一场车祸中丧生，一心想离开农场的赫尔默
+被迫中断大学学业，从此与 牛羊为伍……
+                                      </p>
+                                      <span class="book_info_btn">
+                                          <input type="text" class="text" />
+                                          <input type="text" class="join" />
+                                      </span>
+                                  </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box_wap">
+	<div class="bookshelf">
+    	<div class="po">
+    	<div class="close"></div>
+        <div class="img">
+        	<img src="../images/img6.gif" width="196" height="294" alt="" />
+        </div>
+        <div class="read">
+        	<span class="more">
+            	<em class="s"></em>
+            	<div class="more_list">
+                	<ul>
+                    <li>在读</li>
+                    <li>已读</li>
+                    <li>其他</li>
+                    </ul>
+                </div>
+            </span>
+            <a href="#">想读</a>
+        </div>
+        <div class="read_span">
+        	<a href="#"><em class="x"></em>小说</a> <a href="#"><em class="x"></em>小说</a> <a href="#"><em class="x"></em>小说</a>
+            <span>还可以添加自己的标签</span>
+        </div>
+        <div class="add">
+        	<input class="add_btn fn-right"  type="button"/>
+            <div class="share fn-left">
+            	<!-- Baidu Button BEGIN -->
+                <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+                <span class="bds_more">分享到：</span>
+                <a class="bds_tsina"></a>
+                <a class="bds_qzone"></a>
+                <a class="bds_tqq"></a>
+                <a class="bds_renren"></a>
+                </div>
+                <script type="text/javascript" id="bdshare_js" data="type=tools&amp;mini=1&amp;uid=6485092" ></script>
+                <script type="text/javascript" id="bdshell_js"></script>
+                <script type="text/javascript">
+                document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+                </script>
+                <!-- Baidu Button END -->
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="shadow">
+    </div>
+</div>
+</body>
+</html>
