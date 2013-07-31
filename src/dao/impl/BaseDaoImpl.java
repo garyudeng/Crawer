@@ -13,8 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
 import dao.BaseDao;
 
+
+@Service("baseDao")
 public class BaseDaoImpl implements BaseDao {
 
 	private static String FILE_PATH_NAME = "database.properties";
@@ -97,7 +103,7 @@ public class BaseDaoImpl implements BaseDao {
 		String sql = "";
 		Class<?> baseDao = o.getClass();
 		List<Object> params = new ArrayList<Object>();
-
+		
 		Field[] fields = baseDao.getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			Method m = (Method) o.getClass().getMethod(
@@ -121,6 +127,7 @@ public class BaseDaoImpl implements BaseDao {
 				ps.setObject(i + 1, params.get(i));
 			}
 			reNumber = ps.executeUpdate();
+			
 			close(conn, ps, null);
 		}
 
@@ -186,10 +193,13 @@ public class BaseDaoImpl implements BaseDao {
 			System.out.println(sql);
 			Connection conn = connection();
 			PreparedStatement ps = conn.prepareStatement(sql);
+			
 			for (int i = 0; i < params.size(); i++) {
 				ps.setObject(i + 1, params.get(i));
 			}
 			ResultSet rs = ps.executeQuery();
+			System.out.println("-------HERE!");
+			
 			while (rs.next()) {
 				for (int i = 0; i < fields.length; i++) {
 					Method m = (Method) o.getClass().getMethod(
