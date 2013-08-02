@@ -18,6 +18,7 @@
 				$(this).next(".ph").hide();
 		});
 	});
+	/*
 	$(function(){
 	var $container = $('#container');
 	$container.isotope({
@@ -39,7 +40,8 @@
 	}
 	}
 	});
-	}); 
+	});*/
+	
 	$(function(){
 		$(".pb").hover(
 			function(){
@@ -48,619 +50,811 @@
 				$(this).find(".s_btn").hide();	
 		});
 	});
+	
+	
 </script>
+
 <script src="js/index.js" type="text/javascript"></script>
 <script src="js/jquery.isotope.min.js" type="text/javascript"></script>
+
+<script>
+/**
+ ************************************************************
+ ***@project jquery瀑布流插件
+ ***@author hcp0209@gmail.com
+ ***@ver version 1.0
+ ************************************************************
+ */
+;(function($){
+   var 
+   //参数
+   setting={
+      column_width:180,//列宽
+	  column_className:'waterfall_column',//列的类名
+	  column_space:10,//列间距
+	  cell_selector:'.pb',//要排列的砖块的选择器，context为整个外部容器
+	  img_selector:'img',//要加载的图片的选择器
+	  auto_imgHeight:true,//是否需要自动计算图片的高度
+	  fadein:true,//是否渐显载入
+	  fadein_speed:200,//渐显速率，单位毫秒
+	  insert_type:2, //单元格插入方式，1为插入最短那列，2为按序轮流插入
+	  getResource:function(index){ }  //获取动态资源函数,必须返回一个砖块元素集合,传入参数为加载的次数
+   },
+   waterfall=$.waterfall={},//对外信息对象
+   $container=null;//容器
+   waterfall.load_index=10, //加载次数
+   $.fn.extend({
+       waterfall:function(opt){
+		  opt=opt||{};  
+	      setting=$.extend(setting,opt);
+		  $container=waterfall.$container=$(this);
+		  waterfall.$columns=creatColumn();
+		  render($(this).find(setting.cell_selector).detach(),false); //重排已存在元素时强制不渐显
+		  waterfall._scrollTimer2=null;
+		  $(window).bind('scroll',function(){
+		     clearTimeout(waterfall._scrollTimer2);
+			 waterfall._scrollTimer2=setTimeout(onScroll,300);
+		  });
+		  waterfall._scrollTimer3=null;
+		  $(window).bind('resize',function(){
+		     clearTimeout(waterfall._scrollTimer3);
+			 waterfall._scrollTimer3=setTimeout(onResize,300);
+		  });
+	   }
+   });
+   
+   function creatColumn(){//创建列
+      waterfall.column_num=calculateColumns();//列数
+	  //循环创建列
+	  var html='';
+	  for(var i=0;i<waterfall.column_num;i++){
+	     html+='<div class="'+setting.column_className+'" style="width:'+setting.column_width+'px; display:inline-block; *display:inline;zoom:1; margin-left:'+setting.column_space/2+'px;margin-right:'+setting.column_space/2+'px; vertical-align:top; overflow:hidden"></div>';
+	  }
+	  $container.prepend(html);//插入列
+	// html="";
+	  $.ajax({
+		  type: 'GET',
+		  url: 'http://localhost:8080/bimoku/service/rest/book/query/list/1/15',
+		  timeout:0,
+		  success: function(data){
+			  var str="";
+			  for(var i=0;i<data.length;i++){
+				 
+				 //$("#li1").text(str);
+				 str+="	<div class=\"pb\">";
+				 str+="	<div class=\"s_btn\">";
+				 str+="		<input type=\"button\" class=\"s_btn_1\" /><input type=\"button\"";
+				 str+="			class=\"s_btn_2\" />";
+				 str+="	</div>";
+				 str+="	<div class=\"pb_img\">";
+				 str+="		<img src=\""+data[i]["SRC"]+"\" width=\"158\" height=\"217\" alt=\"\" />";
+				 str+="	</div>";
+				 str+="	<div class=\"pb_num\">";
+				 str+="		<span class=\"like\"><em class=\"like-icon\"></em>29</span> <span ";
+				 str+="			class=\"comments\"><a href=\"#\">评论</a>12</span>";
+				 str+="	</div>";
+				 str+="	<div class=\"pb_message\">";
+				 str+="		<ul>";
+				 str+="			<li>";
+				 str+="				<div class=\"user_img\">";
+				 str+="					<a href=\"#\"><img src=\"images/mes_img.gif\" width=\"26\"";
+				 str+="						height=\"26\" alt=\"\" /></a>";
+				 str+="				</div>";
+				 str+="				<div class=\"Ms\">";
+				 str+="					<a href=\"#\">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地，";
+				 str+="					我们大多数人不知道答案。多。 .........";
+				 str+="				</div>";
+				 str+="			</li>";
+				 str+="		</ul>";
+				 str+="	</div>";
+				 str+="	<div class=\"pb_write\">";
+				 str+="		<input type=\"text\" class=\"pb_write_text foucs_text\"";
+				 str+="			value=\"添加评论或者@好友\" />";
+				 str+="	<div class=\"ph\">";
+				 str+="			<input type=\"button\" class=\"btn\" value=\"评论\" />";
+				 str+="		</div>";
+				 str+="	</div>";
+				 str+="</div>";
+				// $("#container").append(str);
+				//alert($(str));
+				// $container.render(str,true);  
+			
+				//$container.append(str);
+				//onResize();
+				 
+		  }
+			  render($(str),true);
+			  
+			//  onResize();
+		  }
+		});
+	  //show($container);
+	 // alert(html);
+	  $container.prepend(html);//插入列
+	  return $('.'+setting.column_className,$container);//列集合
+   }
+   function calculateColumns(){//计算需要的列数
+      var num=Math.floor(($container.innerWidth())/(setting.column_width+setting.column_space));
+	  if(num<1){ num=1; } //保证至少有一列
+	  return num;
+   }
+   
+   function render(elements,fadein){//渲染元素
+      if(!$(elements).length) return;//没有元素
+      var $columns = waterfall.$columns;
+      $(elements).each(function(i){										
+		  if(!setting.auto_imgHeight||setting.insert_type==2){//如果给出了图片高度，或者是按顺序插入，则不必等图片加载完就能计算列的高度了
+		     if(setting.insert_type==1){ 
+			    insert($(elements).eq(i),setting.fadein&&fadein);//插入元素
+			 }else if(setting.insert_type==2){
+			    insert2($(elements).eq(i),i,setting.fadein&&fadein);//插入元素	 
+		     }
+			 return true;//continue
+		  }						
+		  if($(this)[0].nodeName.toLowerCase()=='img'||$(this).find(setting.img_selector).length>0){//本身是图片或含有图片
+		      var image=new Image;
+			  var src=$(this)[0].nodeName.toLowerCase()=='img'?$(this).attr('src'):$(this).find(setting.img_selector).attr('src');
+			  image.onload=function(){//图片加载后才能自动计算出尺寸
+			      image.onreadystatechange=null;
+				  if(setting.insert_type==1){ 
+				     insert($(elements).eq(i),setting.fadein&&fadein);//插入元素
+				  }else if(setting.insert_type==2){
+					 insert2($(elements).eq(i),i,setting.fadein&&fadein);//插入元素	 
+				  }
+				  image=null;
+			  }
+			  image.onreadystatechange=function(){//处理IE等浏览器的缓存问题：图片缓存后不会再触发onload事件
+			      if(image.readyState == "complete"){
+					 image.onload=null;
+					 if(setting.insert_type==1){ 
+					    insert($(elements).eq(i),setting.fadein&&fadein);//插入元素
+					 }else if(setting.insert_type==2){
+					    insert2($(elements).eq(i),i,setting.fadein&&fadein);//插入元素	 
+					 }
+					 image=null;
+				  }
+			  }
+			  image.src=src;
+		  }else{//不用考虑图片加载
+		      if(setting.insert_type==1){ 
+				 insert($(elements).eq(i),setting.fadein&&fadein);//插入元素
+			  }else if(setting.insert_type==2){
+				 insert2($(elements).eq(i),i,setting.fadein&&fadein);//插入元素	 
+			  }
+		  }						
+	  });
+   }
+   function public_render(elems){//ajax得到元素的渲染接口
+   	  render(elems,true);	
+   }
+   function insert($element,fadein){//把元素插入最短列
+      if(fadein){//渐显
+	     $element.css('opacity',0).appendTo(waterfall.$columns.eq(calculateLowest())).fadeTo(setting.fadein_speed,1);
+	  }else{//不渐显
+         $element.appendTo(waterfall.$columns.eq(calculateLowest()));
+	  }
+   }
+   function insert2($element,i,fadein){//按序轮流插入元素
+      if(fadein){//渐显
+	     $element.css('opacity',0).appendTo(waterfall.$columns.eq(i%waterfall.column_num)).fadeTo(setting.fadein_speed,1);
+	  }else{//不渐显
+         $element.appendTo(waterfall.$columns.eq(i%waterfall.column_num));
+	  }
+   }
+   function calculateLowest(){//计算最短的那列的索引
+      var min=waterfall.$columns.eq(0).outerHeight(),min_key=0;
+	  waterfall.$columns.each(function(i){						   
+		 if($(this).outerHeight()<min){
+		    min=$(this).outerHeight();
+			min_key=i;
+		 }							   
+	  });
+	  return min_key;
+   }
+   function getElements(){//获取资源
+      $.waterfall.load_index++;
+      return setting.getResource($.waterfall.load_index,public_render);
+   }
+  // var index_count=0;
+   waterfall._scrollTimer=200;//延迟滚动加载计时器
+   function onScroll(){//滚动加载
+      clearTimeout(waterfall._scrollTimer);
+	  waterfall._scrollTimer=setTimeout(function(){
+	      var $lowest_column=waterfall.$columns.eq(calculateLowest());//最短列
+		  var bottom=$lowest_column.offset().top+$lowest_column.outerHeight();//最短列底部距离浏览器窗口顶部的距离
+		  var scrollTop=document.documentElement.scrollTop||document.body.scrollTop||0;//滚动条距离
+		  var windowHeight=document.documentElement.clientHeight||document.body.clientHeight||0;//窗口高度
+		  if(scrollTop>=bottom-windowHeight){
+			  waterfall.load_index= waterfall.load_index+1*5;
+			  query_param=document.getElementById("serach_txt").value;
+			  $.ajax({
+				  type: 'GET',
+				  url: encodeURI('http://localhost:8080/bimoku/service/rest/book/query/list/'+ waterfall.load_index+'/5?query='+query_param),
+				  success: function(data){
+					  var str="";
+					  for(var i=0;i<data.length;i++){
+						 //$("#li1").text(str);
+						 str+="	<div class=\"pb\">";
+						 str+="	<div class=\"s_btn\">";
+						 str+="		<input type=\"button\" class=\"s_btn_1\" /><input type=\"button\"";
+						 str+="			class=\"s_btn_2\" />";
+						 str+="	</div>";
+						 str+="	<div class=\"pb_img\">";
+						 str+="		<img src=\""+data[i]["SRC"]+"\" width=\"158\" height=\"217\" title=\""+data[i]["BOOKNAME"]+"\" alt=\""+data[i]["AUTHOR"]+"\" />";
+						 str+="	</div>";
+						 str+="	<div class=\"pb_num\">";
+						 str+="		<span class=\"like\"><em class=\"like-icon\"></em>29</span> <span ";
+						 str+="			class=\"comments\"><a href=\"#\">评论</a>12</span>";
+						 str+="	</div>";
+						 str+="	<div class=\"pb_message\">";
+						 str+="		<ul>";
+						 str+="			<li>";
+						 str+="				<div class=\"user_img\">";
+						 str+="					<a href=\"#\"><img src=\"images/mes_img.gif\" width=\"26\"";
+						 str+="						height=\"26\" alt=\"\" /></a>";
+						 str+="				</div>";
+						 str+="				<div class=\"Ms\">";
+						 str+="					<a href=\"#\">"+data[i]["AUTHOR"]+"</a>"+data[i]["OUTLINE"]+"";
+						 str+="					我们大多数人不知道答案。多。 .........";
+						 str+="				</div>";
+						 str+="			</li>";
+						 str+="		</ul>";
+						 str+="	</div>";
+						 str+="	<div class=\"pb_write\">";
+						 str+="		<input type=\"text\" class=\"pb_write_text foucs_text\"";
+						 str+="			value=\"添加评论或者@好友\" />";
+						 str+="	<div class=\"ph\">";
+						 str+="			<input type=\"button\" class=\"btn\" value=\"评论\" />";
+						 str+="		</div>";
+						 str+="	</div>";
+						 str+="</div>";
+				  }
+					  render($(str),true);  
+				  }
+				});
+			 //render(getElements(),true);
+			 
+		  }
+	  },100);
+   }
+   function onResize(){//窗口缩放时重新排列
+      if(calculateColumns()==waterfall.column_num) return; //列数未改变，不需要重排
+      var $cells=waterfall.$container.find(setting.cell_selector);
+	  waterfall.$columns.remove();
+	  waterfall.$columns=creatColumn();
+      render($cells,false); //重排已有元素时强制不渐显
+   }
+})(jQuery);
+</script>
 </head>
 
 <body>
-<div id="index_top" class="fn-clear">
-	<div class="W960 header">
-    	<div id="logo"><img src="images/logo.gif" width="93" height="42" alt="" /></div>
-        <div id="index_search">
-        	<input type="text" class="s_text foucs_text" value="搜索书名，作者、出版社等"/>
-            <input type="button" class="s_btn" />
-        </div>
-        <div class="index_member">
-        	<div class="drop_icon">
-            </div>
-            <div class="drop_icon_con">
-            	<ul class="zy">
-                	<li><a href="#">主页</a></li>
-                </ul>
-            	<dl>
-                	<dt>笔墨酷手机客户端</dt>
-                    <dd><a href="#">iPhone</a></dd>
-                    <dd><a href="#">Android</a></dd>
-                </dl>
-                <ul class="zr">
-                	<li><a href="#">找人</a></li>
-                    <li><a href="#">兴趣相同的人</a></li>
-                </ul>
-                <ul class="help">
-                	<li>关于&帮助</li>
-                    <li><a href="#">用户反馈</a></li>
-                    <li><a href="#">友情连接</a></li>
-                    <li><a href="#">加入我们</a></li>
-                </ul>
-                <ul class="zh">
-                    <li><a href="#">帐号设置</a></li>
-                    <li><a href="#">退出登录</a></li>
-                </ul>
-            </div>
-            <span class="fn-left login">
-            	<input type="button" class="l_btn" value="登录" />
-            </span>
-            <span class="fn-left reg">
-            	<input type="button" class="r_btn" value="注册" />
-            </span>
-        </div>
-    </div>
-</div>
-<div id="index_warp">
-	<div class="W960">
-    	<div class="index_menu">
-        	<ul>
-            	<li><a href="#" class="index">书城</a></li>
-                <li><a href="#">新书</a></li>
-                <li><a href="#">特价</a></li>
-                <li><a href="#">销售排行榜</a></li>
-                <li><a href="#">搜索排行榜</a></li>
-            </ul>
-            <ul class="ul_user">
-                <li><a href="#">兴趣</a></li>
-                <li><a href="#">书架</a></li>
-                <li><a href="#">社交网络</a></li>
-            </ul>
-        </div>
-        <div class="screen_class">
-        	<dl class="class">
-            	<dt><a href="#">全部</a></dt>
-                <dd><a href="#">小说</a></dd>
-                <dd><a href="#" class="hover">文学</a></dd>
-                <dd><a href="#">教材</a></dd>
-                <dd><a href="#">历史</a></dd>
-                <dd><a href="#">管理</a></dd>
-                <dd>
-                	<a href="#" class="more" id="more_drop">更多</a>
-                    <div class="more_div">
-                    	<ul>
-                        	<li><a href="#">社会</a></li>
-                            <li><a href="#">社会</a></li>
-                            <li><a href="#">社会</a></li>
-                            <li><a href="#">社会</a></li>
-                            <li><a href="#">社会</a></li>
-                            <li><a href="#">社会</a></li>
-                            <li><a href="#">社会</a></li>
-                        </ul>
-                    </div>
-                </dd>
-            </dl>
-            <div class="sort">
-            	<dl>
-                	<dt><a href="#">默认排序</a></dt>
-                    <dd><a href="#">评级</a><em class="down"></em></dd>
-                    <dd><a href="#">点评数</a><em class="down"></em></dd>
-                    <dd><a href="#">价格</a><em class="down"></em></dd>
-                </dl>
-            </div>
-        </div>
-    </div>
-    <div class="W960">
-    	<div class="masonry" id="container">
-        	<div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>
-            <div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                        <li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>
-            <div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                        <li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>
-            <div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message fn-hide">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                        <li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>
-        	<div class="sideNav">
-            	<div class="title">
-                	<h2><a href="#">全部特价</a></h2>
-                </div>
-                <div class="con">
-                	<ul class="nav_list">
-                    	<li><a href="#">3折以下</a></li>
-                        <li><a href="#">3-5折</a></li>
-                        <li><a href="#">5元以下</a></li>
-                        <li><a href="#">5-7折</a></li>
-                        <li><a href="#">5-10元</a></li>
-                        <li><a href="#">10-15元</a></li>
-                        <li><a href="#">15-20元</a></li>
-                        <li><a href="#">20元以上</a></li>
-                    </ul>
-                </div>
-            </div>
-        	<div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                        <li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>
-            <div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>
-            
-            <div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message fn-hide">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                        <li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>
-            
-            <div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message fn-hide">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                        <li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>
-            
-            <div class="pb">
-            	<div class="s_btn"><input type="button" class="s_btn_1" /><input type="button" class="s_btn_2" /></div>
-            	<div class="pb_img">
-                	<img src="images/img5.gif" width="158" height="217" alt="" />
-                </div>
-                <div class="pb_num">
-                	<span class="like"><em class="like-icon"></em>29</span>
-                    <span class="comments"><a href="#">评论</a>12</span>
-                </div>
-                <div class="pb_message fn-hide">
-                	<ul>
-                    	<li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                        <li>
-                        	<div class="user_img"><a href="#"><img src="images/mes_img.gif" width="26" height="26" alt="" /></a></div>
-                            <div class="Ms">
-                            	<a href="#">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地， 我们大多数人不知道答案。多。 .........
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pb_write">
-                	<input type="text" class="pb_write_text foucs_text" value="添加评论或者@好友" />
-                    <div class="ph">
-                    	<input type="button" class="btn" value="评论" />
-                    </div>
-                </div>
-        	</div>          
-        </div>
-    </div>
-</div>
-<div class="box_login">
-    <div id="login">
-        <div class="close"></div>
-        <div class="login_title">
-            登录笔墨酷
-        </div>
-        <div class="login_con">
-            <div class="login_zh">
-                <dl>
-                    <dt>使用合作网站账号登录</dt>
-                    <dd><a href="#"><img src="images/zh_1.gif" width="135" height="36" alt="" /></a></dd>
-                    <dd><a href="#"><img src="images/zh_2.gif" width="135" height="36" alt="" /></a></dd>
-                    <dd><a href="#"><img src="images/zh_3.gif" width="135" height="36" alt="" /></a></dd>
-                    <dd><a href="#"><img src="images/zh_4.gif" height="37" width="134" alt="" /></a></dd>
-                </dl>
-                <p>未注册笔墨酷也可以直接登录！</p>
-            </div>
-            <div class="login_main">
-                <div class="lt">使用注册邮箱登录</div>
-                <div class="ld user"><input type="text" /></div>
-                <div class="ld pass"><input type="text" /></div>
-                <div class="lg"><span class="fotegt"><a href="#">忘记了密码？</a></span><input type="button" class="l_btn" /></div>
-            </div>
-        </div>
-    </div>
-    <div class="shadow">
-    </div>
-</div>
-<div class="box_reg">
-	<div id="reg">
-    	<div class="reg_step">
-        	<ul>
-            	<li class="act"><em class="num_1"></em>上传头像和基本信息</li>
-                <li><em class="num_2"></em>关注兴趣相同的人</li>
-                <li><em class="num_3"></em>关注同一个圈子的人</li>
-            </ul>
-        </div>
-        <div class="reg_photo">
-        	<div class="img">
-            	<img src="images/reg_photo.gif" width="180" height="180" alt="" />
-            </div>
-            <div class="upload_img">
-            	<input type="button" class="u_btn0" />
-            </div>
-        </div>
-        <div class="reg_info">
-        	<ul class="reg_list">
-            	<li>
-                	<span class="text">昵称</span>
-                    <span class="name">格子</span>
-                </li>
-                <li>
-                	<span class="text">性别</span>
-                    <em class="radio act"></em> 男
-                    <em class="radio"></em> 女
-                </li>
-                <li class="city">
-                	<span class="text">所在地</span>
-                    <div class="dq">
-                    	<em></em>
-                        <span>北京</span>
-                        <div class="dq_list">
-                        	<ul class="dq_list_ul">
-                            	<li><a href="#">上海</a></li>
-                                <li><a href="#">天津</a></li>
-                                <li><a href="#">青岛</a></li>
-                                <li><a href="#">济南</a></li>
-                                <li><a href="#">淄博</a></li>
-                                <li><a href="#">杭州</a></li>
-                                <li><a href="#">宁波</a></li>
-                                <li><a href="#">乌鲁木齐</a></li>
-                                <li><a href="#">上海</a></li>
-                                <li><a href="#">天津</a></li>
-                                <li><a href="#">青岛</a></li>
-                                <li><a href="#">济南</a></li>
-                                <li><a href="#">淄博</a></li>
-                                <li><a href="#">杭州</a></li>
-                                <li><a href="#">宁波</a></li>
-                                <li><a href="#">乌鲁木齐</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="dq">
-                    	<em></em>
-                        <span>东城区</span>
-                        <div class="dq_list">
-                        	<ul class="dq_list_ul">
-                            	<li><a href="#">东城区</a></li>
-                                <li><a href="#">西城区</a></li>
-                                <li><a href="#">东城区</a></li>
-                                <li><a href="#">东城区</a></li>
-                                <li><a href="#">西城区</a></li>
-                                <li><a href="#">东城区</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                	<span class="text">学校</span>
-                    <div class="text_kj">
-                    	<input class="text_p" value="点击选择学校" />
-                    </div>
-                </li>
-                <li>
-                	<span class="text">公司</span>
-                    <div class="text_kj">
-                    	<input class="text_p" value="请输入公司的完整名称" />
-                    </div>
-                </li>
-                <li>
-                	<span class="text">微博</span>
-                    <div class="text_kj">
-                    	<input class="text_p" />
-                    </div>
-                </li>
-                <li>
-                	<span class="text">手机</span>
-                    <div class="text_kj">
-                    	<input class="text_p" />
-                    </div>
-                </li>
-                <li>
-                	<span class="text">自述</span>
-                    <div class="text_kj">
-                    	<input class="text_p" />
-                    </div>
-                </li>
-            </ul>
-            <div class="next_step">
-            	<input class="next_btn" type="button" />
-            </div>
-        </div>
+	<div id="index_top" class="fn-clear">
+		<div class="W960 header">
+			<div id="logo">
+				<img src="images/logo.gif" width="93" height="42" alt="" />
+			</div>
+			<div id="index_search">
+				<input type="text" id="serach_txt" class="s_text foucs_text" value="搜索书名，作者、出版社等" />
+				<input type="button" class="s_btn" />
+			</div>
+			<div class="index_member">
+				<div class="drop_icon"></div>
+				<div class="drop_icon_con">
+					<ul class="zy">
+						<li><a href="#">主页</a></li>
+					</ul>
+					<dl>
+						<dt>笔墨酷手机客户端</dt>
+						<dd>
+							<a href="#">iPhone</a>
+						</dd>
+						<dd>
+							<a href="#">Android</a>
+						</dd>
+					</dl>
+					<ul class="zr">
+						<li><a href="#">找人</a></li>
+						<li><a href="#">兴趣相同的人</a></li>
+					</ul>
+					<ul class="help">
+						<li>关于&帮助</li>
+						<li><a href="#">用户反馈</a></li>
+						<li><a href="#">友情连接</a></li>
+						<li><a href="#">加入我们</a></li>
+					</ul>
+					<ul class="zh">
+						<li><a href="#">帐号设置</a></li>
+						<li><a href="#">退出登录</a></li>
+					</ul>
+				</div>
+				<span class="fn-left login"> <input type="button"
+					class="l_btn" value="登录" />
+				</span> <span class="fn-left reg"> <input type="button"
+					class="r_btn" value="注册" />
+				</span>
+			</div>
+		</div>
 	</div>
-	<div class="shadow">
-    </div>
-</div>
-<div class="box_wap">
-	<div class="bookshelf">
-    	<div class="po">
-    	<div class="close"></div>
-        <div class="img">
-        	<img src="images/img6.gif" width="196" height="294" alt="" />
-        </div>
-        <div class="read">
-        	<span class="more">
-            	<em class="s"></em>
-            	<div class="more_list">
-                	<ul>
-                    <li>在读</li>
-                    <li>已读</li>
-                    <li>其他</li>
-                    </ul>
-                </div>
-            </span>
-            <a href="#">想读</a>
-        </div>
-        <div class="read_span">
-        	<a href="#"><em class="x"></em>小说</a> <a href="#"><em class="x"></em>小说</a> <a href="#"><em class="x"></em>小说</a>
-            <span>还可以添加自己的标签</span>
-        </div>
-        <div class="add">
-        	<input class="add_btn fn-right"  type="button"/>
-            <div class="share fn-left">
-            	<!-- Baidu Button BEGIN -->
-                <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
-                <span class="bds_more">分享到：</span>
-                <a class="bds_tsina"></a>
-                <a class="bds_qzone"></a>
-                <a class="bds_tqq"></a>
-                <a class="bds_renren"></a>
-                </div>
-                <script type="text/javascript" id="bdshare_js" data="type=tools&amp;mini=1&amp;uid=6485092" ></script>
-                <script type="text/javascript" id="bdshell_js"></script>
-                <script type="text/javascript">
+	<div id="index_warp">
+		<div class="W960">
+			<div class="index_menu">
+				<ul>
+					<li><a href="#" class="index">书城</a></li>
+					<li><a href="#">新书</a></li>
+					<li><a href="#">特价</a></li>
+					<li><a href="#">销售排行榜</a></li>
+					<li><a href="#">搜索排行榜</a></li>
+				</ul>
+				<ul class="ul_user">
+					<li><a href="#">兴趣</a></li>
+					<li><a href="#">书架</a></li>
+					<li><a href="#">社交网络</a></li>
+				</ul>
+			</div>
+			<div class="screen_class">
+				<dl class="class">
+					<dt>
+						<a href="#">全部</a>
+					</dt>
+					<dd>
+						<a href="#">小说</a>
+					</dd>
+					<dd>
+						<a href="#" class="hover">文学</a>
+					</dd>
+					<dd>
+						<a href="#">教材</a>
+					</dd>
+					<dd>
+						<a href="#">历史</a>
+					</dd>
+					<dd>
+						<a href="#">管理</a>
+					</dd>
+					<dd>
+						<a href="#" class="more" id="more_drop">更多</a>
+						<div class="more_div">
+							<ul>
+								<li><a href="#">社会</a></li>
+								<li><a href="#">社会</a></li>
+								<li><a href="#">社会</a></li>
+								<li><a href="#">社会</a></li>
+								<li><a href="#">社会</a></li>
+								<li><a href="#">社会</a></li>
+								<li><a href="#">社会</a></li>
+							</ul>
+						</div>
+					</dd>
+				</dl>
+				<div class="sort">
+					<dl>
+						<dt>
+							<a href="#">默认排序</a>
+						</dt>
+						<dd>
+							<a href="#">评级</a><em class="down"></em>
+						</dd>
+						<dd>
+							<a href="#">点评数</a><em class="down"></em>
+						</dd>
+						<dd>
+							<a href="#">价格</a><em class="down"></em>
+						</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="W960" id="w960">
+
+			<div class="masonry" id="container">
+
+			
+				<div class="sideNav">
+					<div class="title">
+						<h2>
+							<a href="#">全部特价</a>
+						</h2>
+					</div>
+					<div class="con">
+						<ul class="nav_list">
+							<li><a href="#">3折以下</a></li>
+							<li><a href="#">3-5折</a></li>
+							<li><a href="#">5元以下</a></li>
+							<li><a href="#">5-7折</a></li>
+							<li><a href="#">5-10元</a></li>
+							<li><a href="#">10-15元</a></li>
+							<li><a href="#">15-20元</a></li>
+							<li><a href="#">20元以上</a></li>
+						</ul>
+					</div>
+				</div>
+			
+			
+
+
+
+			
+
+			
+		</div>
+	</div>
+	</div>
+	<div class="box_login">
+		<div id="login">
+			<div class="close"></div>
+			<div class="login_title">登录笔墨酷</div>
+			<div class="login_con">
+				<div class="login_zh">
+					<dl>
+						<dt>使用合作网站账号登录</dt>
+						<dd>
+							<a href="#"><img src="images/zh_1.gif" width="135"
+								height="36" alt="" /></a>
+						</dd>
+						<dd>
+							<a href="#"><img src="images/zh_2.gif" width="135"
+								height="36" alt="" /></a>
+						</dd>
+						<dd>
+							<a href="#"><img src="images/zh_3.gif" width="135"
+								height="36" alt="" /></a>
+						</dd>
+						<dd>
+							<a href="#"><img src="images/zh_4.gif" height="37"
+								width="134" alt="" /></a>
+						</dd>
+					</dl>
+					<p>未注册笔墨酷也可以直接登录！</p>
+				</div>
+				<div class="login_main">
+					<div class="lt">使用注册邮箱登录</div>
+					<div class="ld user">
+						<input type="text" />
+					</div>
+					<div class="ld pass">
+						<input type="text" />
+					</div>
+					<div class="lg">
+						<span class="fotegt"><a href="#">忘记了密码？</a></span><input
+							type="button" class="l_btn" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="shadow"></div>
+	</div>
+	<div class="box_reg">
+		<div id="reg">
+			<div class="reg_step">
+				<ul>
+					<li class="act"><em class="num_1"></em>上传头像和基本信息</li>
+					<li><em class="num_2"></em>关注兴趣相同的人</li>
+					<li><em class="num_3"></em>关注同一个圈子的人</li>
+				</ul>
+			</div>
+			<div class="reg_photo">
+				<div class="img">
+					<img src="images/reg_photo.gif" width="180" height="180" alt="" />
+				</div>
+				<div class="upload_img">
+					<input type="button" class="u_btn0" />
+				</div>
+			</div>
+			<div class="reg_info">
+				<ul class="reg_list">
+					<li><span class="text">昵称</span> <span class="name">格子</span>
+					</li>
+					<li><span class="text">性别</span> <em class="radio act"></em> 男
+						<em class="radio"></em> 女</li>
+					<li class="city"><span class="text">所在地</span>
+						<div class="dq">
+							<em></em> <span>北京</span>
+							<div class="dq_list">
+								<ul class="dq_list_ul">
+									<li><a href="#">上海</a></li>
+									<li><a href="#">天津</a></li>
+									<li><a href="#">青岛</a></li>
+									<li><a href="#">济南</a></li>
+									<li><a href="#">淄博</a></li>
+									<li><a href="#">杭州</a></li>
+									<li><a href="#">宁波</a></li>
+									<li><a href="#">乌鲁木齐</a></li>
+									<li><a href="#">上海</a></li>
+									<li><a href="#">天津</a></li>
+									<li><a href="#">青岛</a></li>
+									<li><a href="#">济南</a></li>
+									<li><a href="#">淄博</a></li>
+									<li><a href="#">杭州</a></li>
+									<li><a href="#">宁波</a></li>
+									<li><a href="#">乌鲁木齐</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="dq">
+							<em></em> <span>东城区</span>
+							<div class="dq_list">
+								<ul class="dq_list_ul">
+									<li><a href="#">东城区</a></li>
+									<li><a href="#">西城区</a></li>
+									<li><a href="#">东城区</a></li>
+									<li><a href="#">东城区</a></li>
+									<li><a href="#">西城区</a></li>
+									<li><a href="#">东城区</a></li>
+								</ul>
+							</div>
+						</div></li>
+					<li><span class="text">学校</span>
+						<div class="text_kj">
+							<input class="text_p" value="点击选择学校" />
+						</div></li>
+					<li><span class="text">公司</span>
+						<div class="text_kj">
+							<input class="text_p" value="请输入公司的完整名称" />
+						</div></li>
+					<li><span class="text">微博</span>
+						<div class="text_kj">
+							<input class="text_p" />
+						</div></li>
+					<li><span class="text">手机</span>
+						<div class="text_kj">
+							<input class="text_p" />
+						</div></li>
+					<li><span class="text">自述</span>
+						<div class="text_kj">
+							<input class="text_p" />
+						</div></li>
+				</ul>
+				<div class="next_step">
+					<input class="next_btn" type="button" />
+				</div>
+			</div>
+		</div>
+		<div class="shadow"></div>
+	</div>
+	<div class="box_wap">
+		<div class="bookshelf">
+			<div class="po">
+				<div class="close"></div>
+				<div class="img">
+					<img src="images/img6.gif" width="196" height="294" alt="" />
+				</div>
+				<div class="read">
+					<span class="more"> <em class="s"></em>
+						<div class="more_list">
+							<ul>
+								<li>在读</li>
+								<li>已读</li>
+								<li>其他</li>
+							</ul>
+						</div>
+					</span> <a href="#">想读</a>
+				</div>
+				<div class="read_span">
+					<a href="#"><em class="x"></em>小说</a> <a href="#"><em class="x"></em>小说</a>
+					<a href="#"><em class="x"></em>小说</a> <span>还可以添加自己的标签</span>
+				</div>
+				<div class="add">
+					<input class="add_btn fn-right" type="button" />
+					<div class="share fn-left">
+						<!-- Baidu Button BEGIN -->
+						<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+							<span class="bds_more">分享到：</span> <a class="bds_tsina"></a> <a
+								class="bds_qzone"></a> <a class="bds_tqq"></a> <a
+								class="bds_renren"></a>
+						</div>
+						<script type="text/javascript" id="bdshare_js"
+							data="type=tools&amp;mini=1&amp;uid=6485092"></script>
+						<script type="text/javascript" id="bdshell_js"></script>
+						<script type="text/javascript">
                 document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
                 </script>
-                <!-- Baidu Button END -->
-            </div>
-        </div>
-        </div>
-    </div>
-    <div class="money">
-    	<div class="po">
-    	<div class="close"></div>
-    	<div class="title">
-        	<a href="#">《告别的年代》</a>定价：25元
-        </div>
-        <div class="money_list">
-        	<dl>
-            	<dt>购买新书</dt>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-            </dl>
-            <dl>
-            	<dt>购买二手书</dt>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-            </dl>
-            <dl>
-            	<dt>购买电子书</dt>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-                <dd><span class="money_f">18元</span><a href="#">当当网</a></dd>
-            </dl>
-        </div>
-       </div>
-    </div>
-    <div class="shadow">
-    </div>
-</div>
+						<!-- Baidu Button END -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="money">
+			<div class="po">
+				<div class="close"></div>
+				<div class="title">
+					<a href="#">《告别的年代》</a>定价：25元
+				</div>
+				<div class="money_list">
+					<dl>
+						<dt>购买新书</dt>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+					</dl>
+					<dl>
+						<dt>购买二手书</dt>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+					</dl>
+					<dl>
+						<dt>购买电子书</dt>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+						<dd>
+							<span class="money_f">18元</span><a href="#">当当网</a>
+						</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="shadow"></div>
+	</div>
+	
+
+
+<script type="text/javascript">
+/*
+var index=1;*/
+function show(){
+	//alert("Hello");
+	
+	$.ajax({
+		  type: 'GET',
+		  url: 'http://localhost:8080/bimoku/service/rest/book/query/list/1/8',
+		  success: function(data){
+			  for(var i=0;i<data.length;i++){
+				  var str="";
+				 //$("#li1").text(str);
+				 str+="	<div class=\"pb\">";
+				 str+="	<div class=\"s_btn\">";
+				 str+="		<input type=\"button\" class=\"s_btn_1\" /><input type=\"button\"";
+				 str+="			class=\"s_btn_2\" />";
+				 str+="	</div>";
+				 str+="	<div class=\"pb_img\">";
+				 str+="		<img src=\""+data[i]["SRC"]+"\" width=\"158\" height=\"217\" alt=\"\" />";
+				 str+="	</div>";
+				 str+="	<div class=\"pb_num\">";
+				 str+="		<span class=\"like\"><em class=\"like-icon\"></em>29</span> <span ";
+				 str+="			class=\"comments\"><a href=\"#\">评论</a>12</span>";
+				 str+="	</div>";
+				 str+="	<div class=\"pb_message\">";
+				 str+="		<ul>";
+				 str+="			<li>";
+				 str+="				<div class=\"user_img\">";
+				 str+="					<a href=\"#\"><img src=\"images/mes_img.gif\" width=\"26\"";
+				 str+="						height=\"26\" alt=\"\" /></a>";
+				 str+="				</div>";
+				 str+="				<div class=\"Ms\">";
+				 str+="					<a href=\"#\">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地，";
+				 str+="					我们大多数人不知道答案。多。 .........";
+				 str+="				</div>";
+				 str+="			</li>";
+				 str+="		</ul>";
+				 str+="	</div>";
+				 str+="	<div class=\"pb_write\">";
+				 str+="		<input type=\"text\" class=\"pb_write_text foucs_text\"";
+				 str+="			value=\"添加评论或者@好友\" />";
+				 str+="	<div class=\"ph\">";
+				 str+="			<input type=\"button\" class=\"btn\" value=\"评论\" />";
+				 str+="		</div>";
+				 str+="	</div>";
+				 str+="</div>";
+				// $("#container").append(str);
+				//alert($(str));
+				 //$container.render(str,true);  
+		  }
+		  }
+		});
+
+}
+/*
+//alert("Hello");
+var hght=0;//初始化滚动条总长
+var top=0;//初始化滚动条的当前位置
+function cando(){
+	var scrollTop=document.documentElement.scrollTop||document.body.scrollTop||0;//滚动条距离
+	var windowHeight=document.documentElement.clientHeight||document.body.clientHeight||0;//窗口高度\
+	var divTop=document.body.offsetHeight;
+	//alert((scrollTop+windowHeight)+"||"+"scrollTop"+scrollTop+"|windowHeight"+windowHeight+"|divTop"+divTop);
+	if((scrollTop+windowHeight+100)>divTop){
+		index++;
+		show();
+	}
+}
+	//if(top>parseInt(hght/3)*2)//判断滚动条当前位置是否超过总长的2 /3，parseInt为取整函数
+	  // alert("Hello");
+	 //show();//如果是，调用show函数加载内容。
+	//}
+ $(document).ready(function() {//DOM的onload事件
+ //$("#container").load(”table.html”);//table.html的内容被加载到 mypage元素
+  $("#w960").scroll( function() {//定义滚动条位置改变时触发的事件。
+    hght=this.scrollHeight;//得到滚动条总长，赋给hght变量
+    top=this.scrollTop;//得到滚动条当前值，赋给top变量
+    });
+  });
+  setInterval(cando,1000);//每隔2秒钟调用一次cando函数来判断当前滚动条位置。
+*/
+
+</script>
+<script>
+var opt={
+  getResource:function(index,render){//index为已加载次数,render为渲染接口函数,接受一个dom集合或jquery对象作为参数。通过ajax等异步方法得到的数据可以传入该接口进行渲染，如 render(elem)
+	  if(index>=7) index=index%7+1;
+	  var html='';
+	  for(var i=20*(index-1);i<20*(index-1)+20;i++){
+		 var k='';
+		 for(var ii=0;ii<3-i.toString().length;ii++){
+	        k+='0';
+		 }
+		 k+=i;
+	     var src="http://cued.xunlei.com/demos/publ/img/P_"+k+".jpg";
+		 html+='<div class="cell"><img src="'+src+'" /><p>'+K+'</p></div>';
+		 var str="";
+		 str+="	<div class=\"pb\">";
+		 str+="	<div class=\"s_btn\">";
+		 str+="		<input type=\"button\" class=\"s_btn_1\" /><input type=\"button\"";
+		 str+="			class=\"s_btn_2\" />";
+		 str+="	</div>";
+		 str+="	<div class=\"pb_img\">";
+		 str+="		<img src=\""+src+"\" width=\"158\" height=\"217\" alt=\"\" />";
+		 str+="	</div>";
+		 str+="	<div class=\"pb_num\">";
+		 str+="		<span class=\"like\"><em class=\"like-icon\"></em>29</span> <span ";
+		 str+="			class=\"comments\"><a href=\"#\">评论</a>12</span>";
+		 str+="	</div>";
+		 str+="	<div class=\"pb_message\">";
+		 str+="		<ul>";
+		 str+="			<li>";
+		 str+="				<div class=\"user_img\">";
+		 str+="					<a href=\"#\"><img src=\"images/mes_img.gif\" width=\"26\"";
+		 str+="						height=\"26\" alt=\"\" /></a>";
+		 str+="				</div>";
+		 str+="				<div class=\"Ms\">";
+		 str+="					<a href=\"#\">风之埃尔夫</a>:什么是美？这又是一个基本的问题， 而又一次毫无意外地，";
+		 str+="					我们大多数人不知道答案。多。 .........";
+		 str+="				</div>";
+		 str+="			</li>";
+		 str+="		</ul>";
+		 str+="	</div>";
+		 str+="	<div class=\"pb_write\">";
+		 str+="		<input type=\"text\" class=\"pb_write_text foucs_text\"";
+		 str+="			value=\"添加评论或者@好友\" />";
+		 str+="	<div class=\"ph\">";
+		 str+="			<input type=\"button\" class=\"btn\" value=\"评论\" />";
+		 str+="		</div>";
+		 str+="	</div>";
+		 str+="</div>";
+	  }
+	// alert(show());
+	  return $(str);
+  },
+  auto_imgHeight:true,
+  insert_type:1
+}
+$('#container').waterfall(opt);
+//show();
+</script>
 </body>
 </html>
