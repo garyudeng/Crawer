@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import util.RelationMapper;
 
 import bean.Book;
+import bean.BookDD;
 import bean.BookDetail;
 import dao.IntegratedDao;
 
@@ -33,13 +34,16 @@ public class IntegratedDaoImpl implements IntegratedDao{
 	BaseDaoImpl baseDao;
 	
 	@Override
-	public int insert2BookDetail(BookDetail detail){
+	public BookDetail insert2BookDetail(BookDetail detail){
 		try {
-			return baseDao.save(detail);
+			if(baseDao.save(detail) != -1){
+				Object object = baseDao.query(detail);
+				return (BookDetail) object;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return -1;
 		}
+		return null;
 	}
 
 	@Override
@@ -62,13 +66,16 @@ public class IntegratedDaoImpl implements IntegratedDao{
 		}
 	}
 
-	//根据当前的书籍的isbn,在基本表里面查找是否存在，如果不存在则插入一则数据（基本数据）
+	/**
+	 * 根据当前的书籍的isbn,在基本表里面查找是否存在，
+	 * 如果不存在则插入一则数据（基本数据）
+	 * 也可查询详细表如：t_bookdd表中是否存在当前记录
+	 */
 	@Override
-	public boolean isExit(Book book) {
+	public boolean isExit(String table,String isbn) {
 		try{
-			String isbn = book.getIsbn();
 			//自己实现！！！
-			String sql = "select count(*) myCount  from t_book where ISBN = ? ";
+			String sql = "select count(*) myCount  from "+table+" where ISBN = ? ";
 			System.out.println(sql);
 			Connection conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);

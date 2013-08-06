@@ -3,8 +3,6 @@ package bean;
 import java.io.Serializable;
 
 import org.codehaus.jettison.json.JSONException;
-
-import util.NetType;
 import util.RelationMapper;
 
 /**
@@ -24,8 +22,8 @@ public class BookDetail implements Serializable{
 	private String isbn;//图书编号
 	private String directory;//目录
 	private String cover_pic;//封面图片
-	private Double price;//单价
 	private String outLine;//概述
+	private Double price;//单价
 	
 //	private NetType netType = NetType.Default;//网站类型
 	
@@ -168,5 +166,16 @@ public class BookDetail implements Serializable{
 		
 		b.setRelationship(RelationMapper.builtWithClass(detail));
 		return b;
+	}
+
+
+	@Override
+	public String toString() {
+		return "BookDetail [id=" + id + ", uuId=" + uuId + ", bookName="
+				+ bookName + ", author=" + author + ", translator="
+				+ translator + ", press=" + press + ", version=" + version
+				+ ", isbn=" + isbn + ", directory=" + directory
+				+ ", cover_pic=" + cover_pic + ", price=" + price
+				+ ", outLine=" + outLine + "]";
 	}
 }
