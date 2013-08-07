@@ -3,9 +3,9 @@
 		<type>mysql</type>
 		<name>user</name>
 		<driver>com.mysql.jdbc.driver</driver>
-		<url>jdbc:mysql://localhost:3306/user</url>
-		<username>sa</username>
-		<password>123456</password>
+		<url>jdbc:mysql://localhost:3306/bimokudb</url>
+		<username>root</username>
+		<password>195891</password>
 		<maxconn>100</maxconn>
 	</pool>
 	<pool>

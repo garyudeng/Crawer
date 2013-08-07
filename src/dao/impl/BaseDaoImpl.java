@@ -17,9 +17,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import bean.BookDD;
+import bean.BookDetail;
+
 import dao.BaseDao;
 
-
+/**
+ * @DATE 13-08-06
+ * @author **
+ * 1、简单的crud
+ * 2、加入父类属性兼容
+ * 3、说有对象属性均需要对象类型
+ * 5、更正查询bug
+ */
 @Service("baseDao")
 public class BaseDaoImpl implements BaseDao {
 
@@ -65,8 +75,9 @@ public class BaseDaoImpl implements BaseDao {
 		List<Object> params = new ArrayList<Object>();
 
 		Field[] fields = baseDao.getDeclaredFields();
+		
 		for (int i = 0; i < fields.length; i++) {
-			Method m = (Method) o.getClass().getMethod(
+			Method m = (Method) baseDao.getMethod(
 					"get" + getMethodName(fields[i].getName()));
 			Object val = m.invoke(o);
 			if (val != null) {
@@ -74,6 +85,26 @@ public class BaseDaoImpl implements BaseDao {
 				params.add(val);
 			}
 		}
+		
+		if(o instanceof BookDetail){
+			Class<?> su = o.getClass().getSuperclass();
+			Field[] fd = su.getDeclaredFields();
+			
+			//把fd加到fields里面去
+			fields = merge(fields,fd);
+			
+			for (int k = 0; k < fd.length; k++) {
+				Method m = (Method) su.getMethod(
+						"get" + getMethodName(fd[k].getName()));
+				Object val = m.invoke(o);
+				if (val != null) {
+					sql += fd[k].getName() + ",";
+					params.add(val);
+				}
+			}
+		}
+		
+		
 		if ((!sql.equals("")) && sql != "") {
 			sql = sql.substring(0, sql.length() - 1);
 			String table = o.getClass().getName();
@@ -85,7 +116,9 @@ public class BaseDaoImpl implements BaseDao {
 			sql = "insert into " + "t_"
 					+ table.substring(table.indexOf(".") + 1, table.length())
 					+ "(" + sql + ") values (" + parasStr + ")";
+			
 			System.out.println(sql);
+			
 			Connection conn = connection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			for (int i = 0; i < params.size(); i++) {
@@ -103,8 +136,8 @@ public class BaseDaoImpl implements BaseDao {
 		String sql = "";
 		Class<?> baseDao = o.getClass();
 		List<Object> params = new ArrayList<Object>();
-		
 		Field[] fields = baseDao.getDeclaredFields();
+		
 		for (int i = 0; i < fields.length; i++) {
 			Method m = (Method) o.getClass().getMethod(
 					"get" + getMethodName(fields[i].getName()));
@@ -114,6 +147,25 @@ public class BaseDaoImpl implements BaseDao {
 				params.add(val);
 			}
 		}
+		
+		if(o instanceof BookDetail){
+			Class<?> su = o.getClass().getSuperclass();
+			Field[] fd = su.getDeclaredFields();
+			
+			//把fd加到fields里面去
+			fields = merge(fields,fd);
+			
+			for (int k = 0; k < fd.length; k++) {
+				Method m = (Method) su.getMethod(
+						"get" + getMethodName(fd[k].getName()));
+				Object val = m.invoke(o);
+				if (val != null) {
+					sql += fd[k].getName() + "=?,";
+					params.add(val);
+				}
+			}
+		}
+		
 		if ((!sql.equals("")) && sql != "") {
 			sql = sql.substring(0, sql.length() - 1);
 			String table = o.getClass().getName();
@@ -140,6 +192,7 @@ public class BaseDaoImpl implements BaseDao {
 		Class<?> baseDao = o.getClass();
 		List<Object> params = new ArrayList<Object>();
 		Field[] fields = baseDao.getDeclaredFields();
+		
 		for (int i = 0; i < fields.length; i++) {
 			Method m = (Method) o.getClass().getMethod(
 					"get" + getMethodName(fields[i].getName()));
@@ -149,6 +202,24 @@ public class BaseDaoImpl implements BaseDao {
 				params.add(val);
 			}
 		}
+		
+		if(o instanceof BookDetail){
+			Class<?> su = o.getClass().getSuperclass();
+			Field[] fd = su.getDeclaredFields();
+			//把fd加到fields里面去
+			fields = merge(fields,fd);
+			
+			for (int k = 0; k < fd.length; k++) {
+				Method m = (Method) su.getMethod(
+						"get" + getMethodName(fd[k].getName()));
+				Object val = m.invoke(o);
+				if (val != null) {
+					sql += fd[k].getName() + "=?,";
+					params.add(val);
+				}
+			}
+		}
+		
 		if ((!sql.equals("")) && sql != "") {
 			sql = sql.substring(0, sql.length() - 1);
 			String table = o.getClass().getName();
@@ -171,26 +242,54 @@ public class BaseDaoImpl implements BaseDao {
 		String sql = "";
 		String queryString = "";
 		Class<?> baseDao = o.getClass();
+		Field[] fields = baseDao.getDeclaredFields();//当前类的字段
+		Field[] fd = null;//父类的字段
+		Object father = null;
+		
 		List<Object> params = new ArrayList<Object>();
-		Field[] fields = baseDao.getDeclaredFields();
+		
 		for (int i = 0; i < fields.length; i++) {
 			Method m = (Method) o.getClass().getMethod(
 					"get" + getMethodName(fields[i].getName()));
 			Object val = m.invoke(o);
 			queryString += fields[i].getName() + ",";
 			if (val != null) {
-				sql += fields[i].getName() + "=?,";
+				sql += fields[i].getName() + "=? and ";
 				params.add(val);
 			}
 		}
+		
+		if(o instanceof BookDetail){
+			Class<?> su = o.getClass().getSuperclass();
+			fd = su.getDeclaredFields();
+			father = su.newInstance();
+//			//把fd加到fields里面去
+//			fields = merge(fields,fd);
+			
+			for (int k = 0; k < fd.length; k++) {
+				Method m = (Method) su.getMethod(
+						"get" + getMethodName(fd[k].getName()));
+				Object val = m.invoke(o);
+				
+				queryString += fd[k].getName() + ",";
+				if (val != null) {
+					sql += fd[k].getName() + "=? and ";
+					params.add(val);
+				}
+			}
+		}
+				
 		if ((!sql.equals("")) && sql != "") {
-			sql = sql.substring(0, sql.length() - 1);
+			sql = sql.substring(0, sql.length() - 4);//4表示‘and ’
 			queryString = queryString.substring(0, queryString.length() - 1);
+			
 			String table = o.getClass().getName();
-			sql = "select  " + queryString + " from t_"
+			sql = "select " + queryString + " from t_"
 					+ table.substring(table.indexOf(".") + 1, table.length())
 					+ " where " + sql;
+			
 			System.out.println(sql);
+			
 			Connection conn = connection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
@@ -198,14 +297,29 @@ public class BaseDaoImpl implements BaseDao {
 				ps.setObject(i + 1, params.get(i));
 			}
 			ResultSet rs = ps.executeQuery();
-			System.out.println("-------HERE!");
-			
 			while (rs.next()) {
 				for (int i = 0; i < fields.length; i++) {
 					Method m = (Method) o.getClass().getMethod(
 							"set" + getMethodName(fields[i].getName()),
 							fields[i].getType());
+					
 					m.invoke(o, rs.getObject(fields[i].getName()));
+				}
+				
+				if(fd == null) continue;//终止当前循环！！！！
+				//父类的属性！！！！！
+				for (int i = 0; i < fd.length; i++) {
+					Field f=fd[i];//取出每一个属性，如deleteDate  
+		            Class<?> type=f.getType(); 
+		             
+					Method m = father.getClass().getMethod("set" + getMethodName(fd[i].getName()),type);
+					
+					f.setAccessible(true);
+					Object data = rs.getObject(f.getName());
+//					f.set(o,rs.getObject(fd[i].getName()));
+//					f.set(o, m.invoke(father, rs.getObject(fd[i].getName())));
+//					m.invoke(father, rs.getObject(f.getName()));
+					f.set(o,data);
 				}
 			}
 			close(conn, ps, rs);
@@ -246,5 +360,16 @@ public class BaseDaoImpl implements BaseDao {
 		}
 
 	}
-
+	
+	
+	public static Field[] merge(Field[] f1,Field[] f2){
+		Field[] f3 = new Field[f1.length + f2.length];
+		for (int j = 0; j < f1.length; ++j) {
+			f3[j] = f1[j];
+		}
+		for (int j = 0; j < f2.length; ++j) {
+			f3[f1.length + j] = f2[j];
+		}
+		return f3;
+	}
 }
