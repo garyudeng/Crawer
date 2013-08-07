@@ -3,10 +3,9 @@ package bean;
 import java.io.Serializable;
 
 import util.Constant;
-import util.NetType;
 
 /**
- * 图书明细
+ * 图书明细---亚马逊站点
  * @author LPM
  * @Date 13-07-31
  */

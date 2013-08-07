@@ -14,9 +14,9 @@ import bean.BookDetail;
 @SuppressWarnings("serial")
 public class RelationMapper implements Serializable{
 	
-	public static String DD_NET = "DD";
-	public static String DB_NET = "DB";
-	public static String AM_NET = "AM";
+	public static String DD_NET = "DD";//铛铛
+	public static String DB_NET = "DB";//豆瓣
+	public static String AM_NET = "AM";//亚马逊
 	
 	
 	private String DD;
@@ -70,13 +70,11 @@ public class RelationMapper implements Serializable{
 		
 		RelationMapper mapper = new RelationMapper();
 		
-//		System.out.println(jo.get(AM_NET));
 		
 		mapper.setAM(jo.get(AM_NET)==null?"":jo.get(AM_NET).toString());
 		mapper.setDD(jo.get(DD_NET)==null?"":jo.get(DD_NET).toString());
 		mapper.setDB(jo.get(DB_NET)==null?"":jo.get(DB_NET).toString());
 		
-//		System.out.println(mapper.toString());
 		
 		return mapper;
 	}
@@ -86,17 +84,18 @@ public class RelationMapper implements Serializable{
 		RelationMapper mapper = new RelationMapper();
 		
 		if(detail instanceof BookDD){
-			mapper.setDD(detail.getIsbn());
+			mapper.setDD(detail.getId()+"");
 		}else if(detail instanceof BookAmazon){
-			mapper.setAM(detail.getIsbn());
+			mapper.setAM(detail.getId()+"");
 		}
+		//...........
 		
 		return bean2Json(mapper);
 	}
 
-//	@Override
-//	public String toString() {
-//		return "{DD=" + DD + ", DB=" + DB + ", AM=" + AM + "}";
-//	}
+	@Override
+	public String toString() {
+		return "RelationMapper [DD=" + DD + ", DB=" + DB + ", AM=" + AM + "]";
+	}
 	
 }

@@ -15,12 +15,18 @@ public class DDIntegraed extends Integrated{
 	
 	
 	@Override
-	public void insert2BookDetail(BookDetail detail) {
-		if(getDao().insert2BookDetail(detail) == -1){
-			System.out.println("error!");
-			//在此，你可以定义自己的插入规则，，可复杂，可简单！！！
+	public BookDetail insert2BookDetail(BookDetail detail) {
+		//先判断是否存在
+		if(isExit(detail)){
+			//做数据跟新流程！！！！！！！！
 			
+			return null;
 		}
+		return getDao().insert2BookDetail(detail);
+	}
+
+	private boolean isExit(BookDetail detail) {
+		return getDao().isExit("t_"+detail.getClass().getSimpleName(), detail.getIsbn());
 	}
 	
 }

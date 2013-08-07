@@ -33,17 +33,20 @@ public abstract class Integrated {
 	public void integrated(BookDetail detail) {
 		
 		//存到detail数据库！！
-		this.insert2BookDetail(detail);//在执行这一步的时候，会触发一个触发器！！！！！
+		//如果这条记录存在（存在的判断标准是isbn是否存在）
+		//则进入细则数据跟新流程
+		BookDetail det = this.insert2BookDetail(detail);
+		
+		if(det == null) return;//当前程序终止！！！
 		
 		Book book = new Book();
-		book.setIsbn(detail.getIsbn());
+		book.setIsbn(det.getIsbn());
 		
 		if (!isExit(book)) {
 			try {
-				book = BookDetail.convert2Book(detail);
+				book = BookDetail.convert2Book(det);
 			} catch (JSONException e) {
 				e.printStackTrace();
-				System.out.println("convert err!");
 			}
 			//不存在
 			insert2Book(book);
@@ -51,9 +54,8 @@ public abstract class Integrated {
 			try {
 				//先找到
 				Book bbk = bookDao.query(book);
-				
 				//数据跟新
-				bbk = adapteData(bbk, detail);
+				bbk = adapteData(bbk, det);
 				//存在，跟新就好！！！！
 				update2Book(bbk);
 				
@@ -85,16 +87,18 @@ public abstract class Integrated {
 	 * @return
 	 */
 	public boolean isExit(Book book){
-		return integratedDao.isExit(book);
+		System.out.println("t_"+book.getClass().getSimpleName());
+		return integratedDao.isExit("t_"+book.getClass().getSimpleName(),book.getIsbn());
 	}
 	
 	//子类必须实现的
-	public abstract void insert2BookDetail(BookDetail detail);
+	public abstract BookDetail insert2BookDetail(BookDetail detail);
 	
 	/**
 	 * 数据张载，目的是为了建立本表与明细表的关系
 	 * 
-	 * 也就是book表的整合relationship这个字段！！！！！！
+	 * 也就是book表的整合relationship这个字段！！！！！！,
+	 * 存放的是isbn作为唯一的标识！！！！！会改成主键：id
 	 * 
 	 * @param book
 	 * @param detail
@@ -102,6 +106,10 @@ public abstract class Integrated {
 	 * @throws JSONException
 	 */
 	public Book adapteData(Book book,BookDetail detail) throws JSONException{
+	
+		//***************************
+		//relationship字段构造！！！！！！
+		//***************************
 		
 		String relation = book.getRelationship();
 		String constructor = (relation==null || relation.equals(""))?"[]":"["+book.getRelationship()+"]"; 
@@ -109,12 +117,17 @@ public abstract class Integrated {
 		RelationMapper mapper = RelationMapper.str2Bean(constructor);
 		
 		if(detail instanceof BookDD){
-			mapper.setDD(detail.getIsbn());
+			mapper.setDD(detail.getId()+"");
 		}else if(detail instanceof BookAmazon){
-			mapper.setAM(detail.getIsbn());
+			mapper.setAM(detail.getId()+"");
 		}
 		
 		book.setRelationship(RelationMapper.bean2Json(mapper));
+		
+		//***************************
+		//使用其他算法进行字段选取1111
+		//***************************
+		//TODO
 		
 		return book;
 	}
