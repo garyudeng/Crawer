@@ -33,13 +33,13 @@ public class DDIntegraedTest {
 				
 		bd.setBookName("cavdvas2222@@@@@@@@我是擦拭");
 		bd.setPrice(22.0);
-		bd.setAuthor("31kj");
-		bd.setIsbn("42141B");
+		bd.setAuthor("31k擦擦撒j");
+		bd.setIsbn("32141B");
 		
 		ba.setBookName("vvvvvvvvaaaaaaaaaaa#$@$@");
 		ba.setPrice(22.0);
 		ba.setAuthor("31kj");
-		ba.setIsbn("32141B");
+		ba.setIsbn("42141B");
 		
 //		in.insert2BookDetail(bd);
 		

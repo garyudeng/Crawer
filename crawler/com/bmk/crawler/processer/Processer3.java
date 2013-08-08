@@ -9,6 +9,10 @@ import java.util.concurrent.TimeUnit;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import util.DDIntegraed;
 
 import com.bmk.crawler.HttpConnnectionManager;
 import com.bmk.crawler.PropertiesUtils;
@@ -23,8 +27,11 @@ import bean.BookDD;
  */
 public class Processer3 implements Runnable{
 	
-//	@Autowired
-//	static BookService bookService;
+	private static DDIntegraed ddIntegraed;
+	public Processer3(){
+		this.ddIntegraed = getIntegraed();
+	}
+	
 	public static boolean isRunning = false;
 	
 	@Override
@@ -56,16 +63,14 @@ public class Processer3 implements Runnable{
 		Document doc = Jsoup.parse(HttpConnnectionManager.getHtml(visitUrl));//Jsoup.connect(visitUrl).get();
 		BookDD book = new BookDD(); 
 		//解析数据
-//		book.setAuthor(doc.select(PropertiesUtils.getProperties().getProperty("author")).text());
-//		book.setIsbn(doc.select(PropertiesUtils.getProperties().getProperty("isbn")).text());
-//		book.setPrice(Double.parseDouble(doc.select(PropertiesUtils.getProperties().getProperty("price")).text()));
-//		book.setOutline(doc.select(PropertiesUtils.getProperties().getProperty("outLine")).text());
+		book.setAuthor(doc.select(PropertiesUtils.getProperties().getProperty("author")).text());
+		book.setIsbn(doc.select(PropertiesUtils.getProperties().getProperty("isbn")).text());
+		book.setPrice(Double.parseDouble(doc.select(PropertiesUtils.getProperties().getProperty("price")).text().substring(1)));
+		book.setOutLine(doc.select(PropertiesUtils.getProperties().getProperty("outline")).text());
 		book.setBookName(doc.select(PropertiesUtils.getProperties().getProperty("bookName")).text());
 		//封装到实体
-		//insert into db
-		//bookService.save(book);
-		System.out.println("bookName---->"+book.getBookName()+"<-->"+visitUrl);
-		
+		System.out.println("bookName---->"+book.getBookName()+"<-->"+book.getAuthor()+"<-->"+book.getOutLine()+"<-->"+book.getIsbn());
+		ddIntegraed.integrated(book);
 	}
 	
 	public static void start(int threadCount){
@@ -78,5 +83,9 @@ public class Processer3 implements Runnable{
 	public static void main(String[] args) {
 		process("http://product.dangdang.com/product.aspx?product_id=22544222#ddclick?act=click&pos=22544222_27_1_p&cat=01.19.00.00.00.00&key=&qinfo=&pinfo=8824_1_48&minfo=&ninfo=&custid=&permid=20130808112126035747584195810198296&ref=&rcount=&type=&t=1375932112000");
 	}
-
+	
+	public static DDIntegraed getIntegraed(){
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/beans.xml");
+		return (DDIntegraed) ctx.getBean("ddIntegraed");
+	}
 }
