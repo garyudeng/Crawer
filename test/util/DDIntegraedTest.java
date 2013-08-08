@@ -15,14 +15,14 @@ import bean.BookDetail;
 
 public class DDIntegraedTest {
 	
-	@Autowired
+//	@Autowired
 	DDIntegraed in;
-	
+//	
 	@Before
 	public void setUp() throws Exception {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/beans.xml");
 		System.out.println(ctx == null?"y":"n");
-		
+//		
 		in = (DDIntegraed) ctx.getBean("ddIntegraed");
 	}
 
@@ -30,26 +30,16 @@ public class DDIntegraedTest {
 	public void testIntegrated() {
 		BookDD bd = new BookDD();
 		BookAmazon ba = new BookAmazon();
-		
-//		Book book = new Book();
-//		book.setBookName("ddddddd");
-//		book.setPrice(22);
-//		book.setAuthor("31kj");
-//		book.setUuId("3124u091");
-//		book.setIsbn("32141B");
-		
-		
-		bd.setBookName("cavdvas2222@@@@@@@@");
+				
+		bd.setBookName("cavdvas2222@@@@@@@@我是擦拭");
 		bd.setPrice(22.0);
 		bd.setAuthor("31kj");
-		bd.setUuId("3124u091");
-		bd.setIsbn("32141B");
+		bd.setIsbn("42141B");
 		
 		ba.setBookName("vvvvvvvvaaaaaaaaaaa#$@$@");
 		ba.setPrice(22.0);
 		ba.setAuthor("31kj");
-		ba.setUuId("3124u091");
-		ba.setIsbn("42141B");
+		ba.setIsbn("32141B");
 		
 //		in.insert2BookDetail(bd);
 		
