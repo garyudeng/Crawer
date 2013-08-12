@@ -53,7 +53,7 @@ public abstract class Integrated {
 		} else {
 			try {
 				//先找到
-				Book bbk = bookDao.query(book);
+				Book bbk = (Book) bookDao.query(book);
 				//数据跟新
 				bbk = adapteData(bbk, det);
 				//存在，跟新就好！！！！

@@ -1,13 +1,13 @@
 package dao;
 
-import bean.Book;
+import java.util.HashMap;
+import java.util.List;
 
-public interface BookDao{
-	public int save(Book o) throws  Exception;
+
+public interface BookDao extends BaseDao{
 	
-	public int delete(Book o) throws  Exception;
 	
-	public int update(Book o,String whereStr) throws Exception;
-	
-	public Book query(Book o) throws Exception;
+	public List<HashMap<String,Object>> queryAll();
+
+	public List<HashMap<String, Object>> queryAll(Integer id, Integer size);
 }
