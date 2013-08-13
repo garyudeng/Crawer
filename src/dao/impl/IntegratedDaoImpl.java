@@ -1,5 +1,7 @@
 package dao.impl;
 
+import integrated.RelationMapper;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -13,7 +15,6 @@ import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import util.RelationMapper;
 
 import bean.Book;
 import bean.BookDD;
@@ -164,9 +165,9 @@ public class IntegratedDaoImpl implements IntegratedDao{
 //		mapper.setDD(512);
 //		System.out.println(RelationMapper.bean2Json(mapper));
 //		
-		String str = "[{\"DD\":512,\"DB\":412,\"AM\":312}]";
-		mapper = RelationMapper.str2Bean(str);
-		System.out.println(mapper.getAM());
+//		String str = "[{\"DD\":512,\"DB\":412,\"AM\":312}]";
+//		mapper = RelationMapper.str2Bean(str);
+//		System.out.println(mapper.getAM());
 	}
 
 

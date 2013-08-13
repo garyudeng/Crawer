@@ -1,5 +1,7 @@
 package com.bmk.crawler.processer;
 
+import integrated.DDIntegraed;
+
 import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -12,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import util.DDIntegraed;
 
 import com.bmk.crawler.HttpConnnectionManager;
 import com.bmk.crawler.PropertiesUtils;
@@ -68,6 +69,13 @@ public class Processer3 implements Runnable{
 		book.setPrice(Double.parseDouble(doc.select(PropertiesUtils.getProperties().getProperty("price")).text().substring(1)));
 		book.setOutLine(doc.select(PropertiesUtils.getProperties().getProperty("outline")).text());
 		book.setBookName(doc.select(PropertiesUtils.getProperties().getProperty("bookName")).text());
+		book.setCover_pic(doc.select(PropertiesUtils.getProperties().getProperty("pic")).attr("wsrc").trim());
+		
+		String outline = doc.select(PropertiesUtils.getProperties().getProperty("outline")).text().trim();
+		if(outline.startsWith("<p>")){
+			outline = Jsoup.parse(outline).select("p").text();
+		}
+		book.setOutLine(outline.length() < 2000 ? outline : outline.substring(0, 2000));
 		//封装到实体
 		System.out.println("bookName---->"+book.getBookName()+"<-->"+book.getAuthor()+"<-->"+book.getOutLine()+"<-->"+book.getIsbn());
 		ddIntegraed.integrated(book);
