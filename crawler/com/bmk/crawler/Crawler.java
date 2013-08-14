@@ -41,7 +41,7 @@ public class Crawler {
 	 */
 	public static void process() throws InterruptedException{
 		Processer1.start(1);
-		Processer2.start(2);
+		Processer2.start(1);
 		Processer3.start(10);
 	}
 	

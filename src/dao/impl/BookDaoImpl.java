@@ -13,12 +13,15 @@ import dao.BaseDao;
 import dao.BookDao;
 
 @Repository("bookDao")
+/**
+ * 	return new BaseDaoImpl().update(o,whereStr);
+ * 	以上写法，会创建大量实体，增加代码耦合度，
+ * 	使用spring ioc管理对象生命周期。
+ * @author Lee
+ *
+ */
 public class BookDaoImpl implements BookDao {
 	
-
-	
-
-
 	
 	@Override
 	public List<HashMap<String, Object>> queryAll() {
@@ -48,9 +51,9 @@ public class BookDaoImpl implements BookDao {
 		return new BaseDaoImpl().update(o,whereStr);
 	}
 	@Override
-	public Object query(Object o) throws Exception {
+	public Book query(Object o) throws Exception {
 		
-		return new BaseDaoImpl().query(o);
+		return (Book) new BaseDaoImpl().query(o);
 	}
 	
 }

@@ -1,9 +1,10 @@
 package bean;
 
+import integrated.RelationMapper;
+
 import java.io.Serializable;
 
 import org.codehaus.jettison.json.JSONException;
-import util.RelationMapper;
 
 /**
  * 图书明细

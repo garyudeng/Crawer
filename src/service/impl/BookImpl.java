@@ -13,7 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.json.JSONArray;
+import org.codehaus.jettison.json.JSONArray;
 
 import dao.BookDao;
 import dao.impl.BookDaoImpl;
