@@ -11,3 +11,5 @@ org.springframework.aspects-3.0.5.RELEASE.jar
 jsoup.jar
 http-core-4.1.jar
 http-clinet-4.1.jar
+
+add c3p0 jars
