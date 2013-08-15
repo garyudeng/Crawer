@@ -21,10 +21,13 @@ public class BookDetail implements Serializable{
 	private String press;//出版社
 	private String version;//版本
 	private String isbn;//图书编号
-	private String directory;//目录
+	private String directory;//目录【值得是：图书-》小说-》文学】
 	private String cover_pic;//封面图片
 	private String outLine;//概述
 	private Double price;//单价
+	
+	private String catelog;//分类
+	private String authorIntro;//作者简介
 	
 //	private NetType netType = NetType.Default;//网站类型
 	
@@ -35,6 +38,25 @@ public class BookDetail implements Serializable{
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public String getCatelog() {
+		return catelog;
+	}
+
+
+	public void setCatelog(String catelog) {
+		this.catelog = catelog;
+	}
+
+
+	public String getAuthorIntro() {
+		return authorIntro;
+	}
+
+
+	public void setAuthorIntro(String authorIntro) {
+		this.authorIntro = authorIntro;
 	}
 
 
@@ -164,6 +186,9 @@ public class BookDetail implements Serializable{
 		b.setPress(detail.getPress());
 		b.setPrice(detail.getPrice());
 		b.setTranslator(detail.getTranslator());
+		
+		b.setAuthorIntro(detail.getAuthorIntro());
+		b.setCatelog(detail.getCatelog());
 		
 		b.setRelationship(RelationMapper.builtWithClass(detail));
 		return b;

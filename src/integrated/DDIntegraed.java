@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 
 import bean.Book;
+import bean.BookDB;
 import bean.BookDetail;
 
 /**
@@ -32,8 +33,14 @@ public class DDIntegraed extends Integrated{
 	}
 
 	@Override
-	public Book filterFileds(Book book) {
-		//TODO
+	public Book filterFileds(Book book,BookDetail detail) {
+		// TODO
+		if(detail instanceof BookDB){
+			//选取豆瓣的字段作为最优方案
+			book.setBookname(detail.getBookName());
+			book.setCatelog(detail.getCatelog());
+			//....
+		}
 		return book;
 	}
 	

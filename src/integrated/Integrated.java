@@ -121,7 +121,7 @@ public abstract class Integrated {
 		//(重复字段择优)
 		//使用其他算法进行字段选取1111
 		//***************************
-		book = filterFileds(book);
+		book = filterFileds(book,detail);
 		
 		return book;
 	}
@@ -131,7 +131,7 @@ public abstract class Integrated {
 	 * @param book
 	 * @return
 	 */
-	public abstract Book filterFileds(Book book);
+	public abstract Book filterFileds(Book book,BookDetail detail);
 
 	/**
 	 * 获取单一数据操纵访问对象（非线程安全的单例）

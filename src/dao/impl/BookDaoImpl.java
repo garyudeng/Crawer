@@ -25,12 +25,12 @@ public class BookDaoImpl implements BookDao {
 	
 	@Override
 	public List<HashMap<String, Object>> queryAll() {
-		return new Db().ExecuteQuery("select * from t_book");
+		return null;//new Db().ExecuteQuery("select * from t_book");
 	}
 
 	@Override
 	public List<HashMap<String, Object>> queryAll(Integer id, Integer size) {
-		return new Db().ExecuteQuery("select * from t_book limit "+id+", "+size);
+		return null;//new Db().ExecuteQuery("select * from t_book limit "+id+", "+size);
 	}
 
 	@Override

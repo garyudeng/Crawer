@@ -1,5 +1,6 @@
 package integrated;
 
+import org.codehaus.jettison.json.JSONException;
 import org.springframework.stereotype.Service;
 
 
@@ -8,13 +9,13 @@ import bean.BookDB;
 import bean.BookDetail;
 
 /**
- * @des:亚马逊集成
+ * @des:豆瓣集成
  * @author Lee
  *
  */
-@Service("amazonIntegrated")
-public class AmazonIntegrated extends Integrated{
-	
+@Service("jdIntegrated")
+public class JDIntegrated extends Integrated {
+
 	@Override
 	public BookDetail insert2BookDetail(BookDetail detail) {
 		// 先判断是否存在

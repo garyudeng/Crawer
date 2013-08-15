@@ -1,6 +1,7 @@
 package util.db;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -11,17 +12,37 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Db {
+	//private Connection conn = null;
+	
+	public Connection connection() throws SQLException {
+		Connection conn = null;
+		if(conn == null || conn.isClosed()){
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				 String url = "jdbc:mysql://localhost:3306/testdb1?user=root&password=195891&useUnicode=true&characterEncoding=gbk";
+				try {
+					conn = DriverManager.getConnection(url);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return conn;
+	}
 
 	/**
 	 * 
 	 * @param sql
 	 * @return
+	 * @throws SQLException 
 	 */
-	public List<HashMap<String,Object>> ExecuteQuery(String sql){
+	public List<HashMap<String,Object>> ExecuteQuery(String sql) throws SQLException{
 		List<HashMap<String,Object>> datas=null;
 		PreparedStatement sta=null;
 		ResultSet rs=null;
-		Connection conn=null;
+		Connection conn = connection();;
 		try{
 			sta=conn.prepareStatement(sql);
 			rs=sta.executeQuery();
@@ -45,7 +66,7 @@ public class Db {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
-			
+			close(sta, rs, conn);
 		}
 		return datas;
 		
@@ -82,10 +103,11 @@ public class Db {
 	 * 
 	 * @param sql
 	 * @return
+	 * @throws SQLException 
 	 */
-	public int ExecuteNonQuery(String sql){
+	public int ExecuteNonQuery(String sql) throws SQLException{
 		int reNum=-1;
-		Connection conn=null;
+		Connection conn = connection();
 		Statement stat=null;
 		try{
 			stat=conn.createStatement();

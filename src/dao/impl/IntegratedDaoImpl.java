@@ -29,8 +29,6 @@ import dao.IntegratedDao;
 @Repository("integratedDao")
 public class IntegratedDaoImpl implements IntegratedDao{
 	
-	private static String FILE_PATH_NAME = "database.properties";
-	
 	@Autowired
 	BaseDaoImpl baseDao;
 	
@@ -74,87 +72,36 @@ public class IntegratedDaoImpl implements IntegratedDao{
 	 */
 	@Override
 	public boolean isExit(String table,String isbn) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int myCount = -1;
+		
 		try{
 			//自己实现！！！
 			String sql = "select count(*) myCount  from "+table+" where ISBN = ? ";
+			
 			System.out.println(sql);
-			Connection conn = getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			conn = ConnectionFactory.getConnection();//getConnection();
+			ps = conn.prepareStatement(sql);
+			
 			ps.setObject(1, isbn);
-			ResultSet rs = ps.executeQuery();
-			int myCount = -1;
+			rs = ps.executeQuery();
 			
 			while(rs.next()){
-				myCount =rs.getInt("myCount");
+				myCount = rs.getInt("myCount");
 			}
-			if(myCount == 1) return true;
 			
-			//关闭资源
-			close(conn, ps, rs);
 		}catch(Exception e){
 			e.printStackTrace();
+		}finally{
+			ConnectionFactory.close(conn, ps, rs);
 		}
+		
+		if(myCount > 0)
+			return true;
 		return false;
-	}
-	
-	public Connection getConnection() {
-		Connection connection = null;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			// String url =
-			// "jdbc:mysql://localhost:3306/test?user=root&password=root&useUnicode=true&characterEncoding=gbk";
-			String url = init();
-			try {
-				connection = DriverManager.getConnection(url);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
-		return connection;
-	}
-	
-	public void close(Connection conn, PreparedStatement ps, ResultSet rs) {
-		if (rs != null) {
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				if (ps != null) {
-					try {
-						ps.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					} finally {
-						if (conn != null) {
-							try {
-								conn.close();
-							} catch (SQLException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-			}
-		}
-
-	}
-	public String init() {
-		String re = "";
-		try {
-			InputStream in = getClass().getResourceAsStream(FILE_PATH_NAME);
-			Properties props = new Properties();
-			props.load(in);
-			in.close();
-			re = props.getProperty("url");
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return re;
 	}
 	
 	

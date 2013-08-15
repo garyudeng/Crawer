@@ -19,6 +19,12 @@ import util.FreeMarkers;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
+/**
+ * 代码生成器
+ * 【使用fremaker的代码生成器】
+ * @author LPM
+ *
+ */
 public class Generate {
 	private static Logger log = LoggerFactory.getLogger(Generate.class);
 	

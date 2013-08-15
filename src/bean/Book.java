@@ -26,6 +26,9 @@ public class Book implements Serializable{
 	private String directory;//目录
 	private Double price;//单价
 	
+	private String catelog;//分类
+	private String authorIntro;//作者简介
+	
 	private String relationship;//关系列，存放：{'dd':'20','amazon':'231',}
 	
 	public Book(){}
@@ -48,6 +51,22 @@ public class Book implements Serializable{
 
 	public String getBookname() {
 		return bookname;
+	}
+
+	public String getCatelog() {
+		return catelog;
+	}
+
+	public void setCatelog(String catelog) {
+		this.catelog = catelog;
+	}
+
+	public String getAuthorIntro() {
+		return authorIntro;
+	}
+
+	public void setAuthorIntro(String authorIntro) {
+		this.authorIntro = authorIntro;
 	}
 
 	public void setBookname(String bookname) {

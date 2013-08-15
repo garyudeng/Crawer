@@ -138,16 +138,17 @@ public class DbConnectionPool  {
 	public synchronized Connection getConnection(long timeout){
 		Connection con=null;
 		if(this.freeConnections.size()>0){
-			con=(Connection)this.freeConnections.get(0);
-			if(con==null)con=getConnection(timeout);//继续获得连接
+			con = (Connection)this.freeConnections.get(0);
+			if(con == null)
+				con = getConnection(timeout);//继续获得连接
 		}else{
-			con=newConnection();//新建连接
+			con = newConnection();//新建连接
 		}
 		
-		if(this.maxConn==0||this.maxConn<this.inUsed){
-			con=null;//达到最大连接数，暂时不能获得连接了
+		if(this.maxConn==0 ||this.maxConn<this.inUsed){
+			con = null;//达到最大连接数，暂时不能获得连接了
 		}
-		if(con!=null){
+		if(con != null){
 			this.inUsed++;
 		}
 		return con;
