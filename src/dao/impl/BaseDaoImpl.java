@@ -239,7 +239,6 @@ public class BaseDaoImpl implements BaseDao {
 		ResultSet rs = null;
 
 		String sql = "";
-		String queryString = "";
 		Class<?> baseDao = o.getClass();
 		Field[] fields = baseDao.getDeclaredFields();// 当前类的字段
 		Field[] fd = null;// 父类的字段
@@ -251,11 +250,64 @@ public class BaseDaoImpl implements BaseDao {
 			Method m = (Method) o.getClass().getMethod(
 					"get" + getMethodName(fields[i].getName()));
 			Object val = m.invoke(o);
-			queryString += fields[i].getName() + ",";
 			if (val != null) {
 				sql += fields[i].getName() + "=? and ";
 				params.add(val);
 			}
+		}
+
+		if (o instanceof BookDetail) {
+			Class<?> su = o.getClass().getSuperclass();
+			fd = su.getDeclaredFields();
+			father = su.newInstance();
+
+			for (int k = 0; k < fd.length; k++) {
+				Method m = (Method) su.getMethod("get"
+						+ getMethodName(fd[k].getName()));
+				Object val = m.invoke(o);
+				if (val != null) {
+					sql += fd[k].getName() + "=? and ";
+					params.add(val);
+				}
+			}
+		}
+
+		if ((!sql.equals("")) && sql != "") {
+			sql = sql.substring(0, sql.length() - 4);// 4表示‘and ’
+			sql = " where" + sql;
+			
+			//开是查询
+			this.query(o, sql, params);
+		}
+		return o;
+	}
+	
+	
+	/**
+	 * 
+	 * @param o 查询对象
+	 * @param whereStr where isbn = ?
+	 * @param params 999999(isbn号)
+	 * @return
+	 * @throws Exception
+	 */
+	public Object query(Object o, String whereStr, List<Object> params)
+			throws Exception {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String queryString = "";
+		Class<?> baseDao = o.getClass();
+		Field[] fields = baseDao.getDeclaredFields();// 当前类的字段
+		Field[] fd = null;// 父类的字段
+		Object father = null;
+
+		for (int i = 0; i < fields.length; i++) {
+			Method m = (Method) o.getClass().getMethod(
+					"get" + getMethodName(fields[i].getName()));
+			Object val = m.invoke(o);
+			queryString += fields[i].getName() + ",";
 		}
 
 		if (o instanceof BookDetail) {
@@ -269,72 +321,63 @@ public class BaseDaoImpl implements BaseDao {
 				Method m = (Method) su.getMethod("get"
 						+ getMethodName(fd[k].getName()));
 				Object val = m.invoke(o);
-
 				queryString += fd[k].getName() + ",";
-				if (val != null) {
-					sql += fd[k].getName() + "=? and ";
-					params.add(val);
-				}
 			}
 		}
 
-		if ((!sql.equals("")) && sql != "") {
-			sql = sql.substring(0, sql.length() - 4);// 4表示‘and ’
-			queryString = queryString.substring(0, queryString.length() - 1);
+		queryString = queryString.substring(0, queryString.length() - 1);
+		String table = o.getClass().getSimpleName();
 
-			String table = o.getClass().getName();
-			sql = "select " + queryString + " from t_"
-					+ table.substring(table.indexOf(".") + 1, table.length())
-					+ " where " + sql;
+		String sql = "select " + queryString + " from t_" + table + " " + whereStr;
 
-			System.out.println(sql);
+		System.out.println(sql);
 
-			try {
-				conn = conn = ConnectionFactory.getConnection();// connection();
-				ps = conn.prepareStatement(sql);
+		try {
+			conn = conn = ConnectionFactory.getConnection();// connection();
+			ps = conn.prepareStatement(sql);
 
-				for (int i = 0; i < params.size(); i++) {
-					ps.setObject(i + 1, params.get(i));
-				}
-
-				rs = ps.executeQuery();
-
-				while (rs.next()) {
-					for (int i = 0; i < fields.length; i++) {
-						Method m = (Method) o.getClass().getMethod(
-								"set" + getMethodName(fields[i].getName()),
-								fields[i].getType());
-
-						m.invoke(o, rs.getObject(fields[i].getName()));
-					}
-
-					if (fd == null)
-						continue;// 终止当前循环！！！！
-					// 父类的属性！！！！！
-					for (int i = 0; i < fd.length; i++) {
-						Field f = fd[i];// 取出每一个属性，如deleteDate
-						Class<?> type = f.getType();
-
-						Method m = father.getClass().getMethod(
-								"set" + getMethodName(fd[i].getName()), type);
-
-						f.setAccessible(true);
-						Object data = rs.getObject(f.getName());
-						// f.set(o,rs.getObject(fd[i].getName()));
-						// f.set(o, m.invoke(father,
-						// rs.getObject(fd[i].getName())));
-						// m.invoke(father, rs.getObject(f.getName()));
-						f.set(o, data);
-					}
-				}
-			} catch (Exception e) {
-				throw new RuntimeException("sql 语句执行异常", e);
-			} finally {
-				ConnectionFactory.close(conn, ps, rs);
+			for (int i = 0; i < params.size(); i++) {
+				ps.setObject(i + 1, params.get(i));
 			}
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				for (int i = 0; i < fields.length; i++) {
+					Method m = (Method) o.getClass().getMethod(
+							"set" + getMethodName(fields[i].getName()),
+							fields[i].getType());
+
+					m.invoke(o, rs.getObject(fields[i].getName()));
+				}
+
+				if (fd == null)
+					continue;// 终止当前循环！！！！
+				// 父类的属性！！！！！
+				for (int i = 0; i < fd.length; i++) {
+					Field f = fd[i];// 取出每一个属性，如deleteDate
+					Class<?> type = f.getType();
+
+					Method m = father.getClass().getMethod(
+							"set" + getMethodName(fd[i].getName()), type);
+
+					f.setAccessible(true);
+					Object data = rs.getObject(f.getName());
+					// f.set(o,rs.getObject(fd[i].getName()));
+					// f.set(o, m.invoke(father,
+					// rs.getObject(fd[i].getName())));
+					// m.invoke(father, rs.getObject(f.getName()));
+					f.set(o, data);
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("sql 语句执行异常", e);
+		} finally {
+			ConnectionFactory.close(conn, ps, rs);
 		}
 		return o;
 	}
+
 
 	private static String getMethodName(String fildeName) throws Exception {
 		byte[] items = fildeName.getBytes();

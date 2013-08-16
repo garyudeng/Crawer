@@ -1,7 +1,5 @@
 package dao.impl;
 
-import java.sql.Connection;
-
 import bean.BookDD;
 import bean.CommentDetail;
 import bean.SumerizeDetail;

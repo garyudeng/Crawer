@@ -1,8 +1,3 @@
-/**
- * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- */
 package util;
 
 import java.io.File;
@@ -379,6 +374,16 @@ public class FileUtils {
 			log.debug("目录" + descDirNames + "创建失败!");
 			return false;
 		}
-
+	}
+	
+	/**
+	 * 获取某个目录下的文件
+	 * @param filepath
+	 * @return
+	 */
+	public static File[] getFileslist(String filepath) {
+		File file = new File(filepath);
+		File[] files = file.listFiles();
+		return files;
 	}
 }

@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.codehaus.jettison.json.JSONException;
@@ -36,7 +38,9 @@ public class IntegratedDaoImpl implements IntegratedDao{
 	public BookDetail insert2BookDetail(BookDetail detail){
 		try {
 			if(baseDao.save(detail) != -1){
-				Object object = baseDao.query(detail);
+				List<Object> params = new ArrayList<Object>();
+				params.add(detail.getIsbn());
+				Object object = baseDao.query(detail,"where isbn=? ",params);
 				return (BookDetail) object;
 			}
 		} catch (Exception e) {

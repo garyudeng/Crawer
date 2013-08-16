@@ -2,6 +2,8 @@ package util.filter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 字段取优算法filter
@@ -125,9 +127,27 @@ public abstract class FieldFilter {
 		return "";
 	}
 	
+	/**
+	 * 去掉<>之间的部分
+	 * @param content
+	 * @return
+	 */
+	public static String trimTag(String content) {
+		String regEx = "<[^>]+>";
+		Pattern p = Pattern.compile(regEx);
+		Matcher m = p.matcher(content.trim());
+		String result = "";
+		if (m.find()) {
+			result = m.replaceAll("");
+		}
+		result = result.replace("<", "").replace(">", "");
+		return result;
+	}
+	
 	public static void main(String[] args) {
 		System.out.println(longestMatch("朱镕基上海讲话实录（平装）：再现朱镕基总理主政上海期间的重要讲话、谈话、信件等106篇，首次公开珍贵照片和手迹影印件", "朱镕基上海讲话实录（平装）：再现朱镕基总理主政上海期间的重要讲话、谈话、信件等106篇，首次公开珍贵照片和手迹影印件！,《朱镕基上海讲话实录》编辑组 编,人民出版社,9787010124025"));
 		//String[] arr = {"好声音，中国","中国好声音","中国，好声音"};
 		//System.out.println(longestMatch(arr));
+		System.out.println(trimTag(" <aaaaaaa> aa>".trim()));
 	}
 }
