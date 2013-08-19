@@ -1,23 +1,22 @@
 package bimoku.extract.main;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 
-import bimoku.extract.parser.ParseDD00;
+import bimoku.extract.common.PropertyUtil;
+import bimoku.extract.common.exception.ExtractException;
 import bimoku.extract.parser.Parser;
 
 import util.FileUtils;
 
 /**
  * 抽取的线程
+ * 
  * @author 梅良
- * @author LPM 跟新优化代码
+ * @author LPM 跟新优化代码，，使用实现runnable的方法，方便使用线程池
  *
  */
-public class Extract extends Thread {
+public class Extract implements Runnable{
 
 	private String directory;
 	private Parser parser;
@@ -63,12 +62,22 @@ public class Extract extends Thread {
 				String filepath = directorylast + "/" + htmllist.remove(0);
 				try {
 					parser.parser(filepath);//调用相关的抽取方法
-				}catch (Exception e) {
-					//抽取失败
-					//TODO 在此处对出去失败的记录做处理
+				}catch(ExtractException e) {
+					//抽取异常，把该文件复制到相应的目录下面
+					recordError(filepath);
+					//在此处对出去失败的记录做处理
 					e.printStackTrace();
 				}
 			}
 		}
+	}
+	
+	/**
+	 * 抽取失败处理
+	 * @param filePath
+	 */
+	private void recordError(String filePath){
+		String destPath = PropertyUtil.getProperty().getProperty("exception") + File.separator + filePath.substring(filePath.lastIndexOf('/'));
+		FileUtils.copyFile(filePath, destPath);
 	}
 }

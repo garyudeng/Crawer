@@ -4,8 +4,11 @@ import integrated.Integrated;
 
 import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
+
 import bean.BookDetail;
 import bimoku.extract.common.PropertyUtil;
+import bimoku.extract.common.exception.ExtractException;
 
 /**
  * 抽取主程序
@@ -28,17 +31,23 @@ public abstract class Parser {
 	 * 调用集成接口
 	 * 
 	 */
-	public void parser(String filepath) throws Exception{
+	public void parser(String filepath) throws ExtractException{
 		//抽取
-		Map<String,String> map = getElementsInfo(filepath);
+		Map<String, String> map = new HashedMap();
+		try {
+			map = getElementsInfo(filepath);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 		//没有抓到书名或者isbn的，都不再进行后续操作
 		if(map.get(PropertyUtil.BOOKNAME) == null || map.get(PropertyUtil.ISBN) == null){
-			return;
+			throw new ExtractException();
 		}
 		//过滤，精确抽取
 		BookDetail bookDetail = fieldFilter(map);
 		if(bookDetail.getBookName() == null || bookDetail.getIsbn() == null){
-			return;
+			throw new ExtractException();
 		}
 		//数据持久化
 		getIntegratedDao().integrated(bookDetail);
