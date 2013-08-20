@@ -1,12 +1,13 @@
 package bimoku.extract.parser;
 
-import integrated.Integrated;
 
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
 
-import bean.BookDetail;
+import com.bimoku.common.bean.BookDetail;
+import com.bimoku.integrate.Integrated;
+
 import bimoku.extract.common.PropertyUtil;
 import bimoku.extract.common.exception.ExtractException;
 

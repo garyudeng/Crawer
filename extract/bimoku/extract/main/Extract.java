@@ -3,11 +3,12 @@ package bimoku.extract.main;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.bimoku.util.FileUtils;
+
 import bimoku.extract.common.PropertyUtil;
 import bimoku.extract.common.exception.ExtractException;
 import bimoku.extract.parser.Parser;
 
-import util.FileUtils;
 
 /**
  * 抽取的线程

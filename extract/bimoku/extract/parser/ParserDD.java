@@ -1,8 +1,5 @@
 package bimoku.extract.parser;
 
-import integrated.DDIntegraed;
-import integrated.Integrated;
-import integrated.JDIntegrated;
 
 import java.io.File;
 import java.util.Map;
@@ -15,16 +12,19 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import bean.BookDD;
-import bean.BookDetail;
-import bean.BookJD;
+import com.bimoku.common.bean.BookDD;
+import com.bimoku.common.bean.BookDetail;
+import com.bimoku.common.bean.BookJD;
+import com.bimoku.integrate.DDIntegrated;
+import com.bimoku.integrate.Integrated;
+
 import bimoku.extract.common.PropertyUtil;
 
 @Component("parserDD")
 public class ParserDD extends Parser{
 	
 	@Autowired
-	DDIntegraed ddIntegrated;
+	DDIntegrated ddIntegrated;
 	
 	@Override
 	protected Integrated getIntegratedDao() {

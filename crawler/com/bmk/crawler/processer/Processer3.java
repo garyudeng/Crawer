@@ -1,24 +1,20 @@
 package com.bmk.crawler.processer;
 
-import integrated.DDIntegraed;
 
-import java.io.IOException;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
+import com.bimoku.common.bean.BookDD;
+import com.bimoku.integrate.DDIntegrated;
 import com.bmk.crawler.HttpConnnectionManager;
 import com.bmk.crawler.PropertiesUtils;
 
-import bean.BookDD;
 
 
 /**
@@ -28,7 +24,8 @@ import bean.BookDD;
  */
 public class Processer3 implements Runnable{
 	
-	private static DDIntegraed ddIntegraed;
+	private static DDIntegrated ddIntegraed;
+	
 	public Processer3(){
 		this.ddIntegraed = getIntegraed();
 	}
@@ -78,7 +75,8 @@ public class Processer3 implements Runnable{
 		book.setOutLine(outline.length() < 2000 ? outline : outline.substring(0, 2000));
 		//封装到实体
 		System.out.println("bookName---->"+book.getBookName()+"<-->"+book.getAuthor()+"<-->"+book.getOutLine()+"<-->"+book.getIsbn());
-		ddIntegraed.integrated(book);
+		
+		//TODO
 	}
 	
 	public static void start(int threadCount){
@@ -92,8 +90,8 @@ public class Processer3 implements Runnable{
 		process("http://product.dangdang.com/product.aspx?product_id=22544222#ddclick?act=click&pos=22544222_27_1_p&cat=01.19.00.00.00.00&key=&qinfo=&pinfo=8824_1_48&minfo=&ninfo=&custid=&permid=20130808112126035747584195810198296&ref=&rcount=&type=&t=1375932112000");
 	}
 	
-	public static DDIntegraed getIntegraed(){
+	public static DDIntegrated getIntegraed(){
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/beans.xml");
-		return (DDIntegraed) ctx.getBean("ddIntegraed");
+		return (DDIntegrated) ctx.getBean("ddIntegraed");
 	}
 }

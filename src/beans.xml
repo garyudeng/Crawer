@@ -20,14 +20,50 @@
 	<context:spring-configured/>
 	<context:annotation-config/> 
 	<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
-    <context:component-scan base-package="dao,util,integrated,bimoku">
+    <context:component-scan base-package="com.bimoku">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan> 
 	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource">
+		</property>
+	</bean>
+	<bean id="dataSource"   class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">
+        
+        <property name="driverClass"><value>com.mysql.jdbc.Driver</value></property>
+         <property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/bimokudb?useUnicode=true&amp;characterEncoding=UTF8</value></property>               
+         <property name="user"><value>root</value></property>
+         <property name="password"><value>195891</value></property>
+         
+         <property name="minPoolSize"><value>3</value></property>
+         <property name="maxPoolSize"><value>250</value></property>
+         <property name="maxIdleTime"><value>1800</value></property>
+         <property name="acquireIncrement"><value>2</value></property>
+         <property name="maxStatements"><value>0</value></property>
+         <property name="initialPoolSize"><value>2</value></property>
+         <property name="idleConnectionTestPeriod"><value>1800</value></property>
+         <property name="acquireRetryAttempts"><value>30</value></property>
+         <property name="breakAfterAcquireFailure"><value>true</value></property>
+         <property name="testConnectionOnCheckout"><value>false</value></property>
+    </bean>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 
 	<bean id="restSample" class="service.impl.HelloWodImpl" />
 	<bean id="baseDao" class="dao.impl.BaseDaoImpl" />
-	
+	 -->
 	<!-- 这里的地址很重要，客户端需要通过这个地址来访问WebService -->
+	<!--  
 	<jaxrs:server id="restServiceContainer" address="/rest">
 		<jaxrs:serviceBeans>
 			<ref bean="restSample" />
@@ -40,4 +76,5 @@
 			<entry key="en" value="en-gb" />
 		</jaxrs:languageMappings>
 	</jaxrs:server>
+	 -->
 </beans>  
