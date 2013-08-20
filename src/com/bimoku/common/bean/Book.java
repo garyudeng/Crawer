@@ -32,6 +32,8 @@ public class Book implements Serializable{
 	private String directory;//目录<1k
 	private Double price;//单价
 	private Double pub_price;//定价
+	private String all_price;//站点比价
+	
 	
 	private String catelog;//分类<50
 	private String authorIntro;//作者简介<215
@@ -177,6 +179,14 @@ public class Book implements Serializable{
 		this.relationship = relationship;
 	}
 
+	public String getAll_price() {
+		return all_price;
+	}
+
+	public void setAll_price(String all_price) {
+		this.all_price = all_price;
+	}
+
 	public Double getPub_price() {
 		return pub_price;
 	}
@@ -194,9 +204,9 @@ public class Book implements Serializable{
 				+ ", wantRead=" + wantRead + ", reading=" + reading
 				+ ", hasread=" + hasread + ", directory=" + directory
 				+ ", price=" + price + ", pub_price=" + pub_price
-				+ ", catelog=" + catelog + ", authorIntro=" + authorIntro
-				+ ", relationship=" + relationship + "]";
+				+ ", all_price=" + all_price + ", catelog=" + catelog
+				+ ", authorIntro=" + authorIntro + ", relationship="
+				+ relationship + "]";
 	}
-	
 	
 }

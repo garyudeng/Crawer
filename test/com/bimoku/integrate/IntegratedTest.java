@@ -29,17 +29,43 @@ public class IntegratedTest {
 		pubIntegrated = (PubIntegrated) ctx.getBean("pubIntegrated");
 	}
 
-	@Test
+	@Test 
 	public void testIntegrated() {
-		for(int a=1;a<11;a++){
+		for(int a=1;a<2;a++){
 			BookDD dd = new BookDD();
 			BookDB db = new BookDB();
 			BookJD jd = new BookJD();
 			BookAmazon am = new BookAmazon();
 			BookPub pub = new BookPub();
 			
+			/**
 			dd.setBookName("love u"+a);
 			dd.setIsbn("isbn:dd+"+a);
+			dd.setPrice(22.3+a);
+			dd.setOutLine(a+"我爱你中国【当当】");
+			
+			db.setBookName("love u"+a);
+			db.setIsbn("isbn:db+"+a);
+			db.setPrice(22.3+a);
+			db.setOutLine(a+"我爱你中国【豆瓣】");
+			
+			jd.setBookName("love u"+a);
+			jd.setIsbn("isbn:jd+"+a);
+			jd.setPrice(22.3+a);
+			jd.setOutLine(a+"我爱你中国【京东】");
+			
+			am.setBookName("love u"+a);
+			am.setIsbn("isbn:am+"+a);
+			am.setPrice(22.3+a);
+			am.setOutLine(a+"我爱你中国【亚马逊】");
+			
+			pub.setBookName("love u"+a);
+			pub.setIsbn("isbn:pub+"+a);
+			pub.setPrice(22.3+a);
+			pub.setOutLine(a+"我爱你中国【中国互动】");
+			**/
+			dd.setBookName("love u"+a);
+			dd.setIsbn("isbn:pub+"+a);
 			dd.setPrice(22.3+a);
 			dd.setOutLine(a+"我爱你中国【当当】");
 			
@@ -49,17 +75,17 @@ public class IntegratedTest {
 			db.setOutLine(a+"我爱你中国【豆瓣】");
 			
 			jd.setBookName("love u"+a);
-			jd.setIsbn("isbn:dd+"+a);
+			jd.setIsbn("isbn:db+"+a);
 			jd.setPrice(22.3+a);
 			jd.setOutLine(a+"我爱你中国【京东】");
 			
 			am.setBookName("love u"+a);
-			am.setIsbn("isbn:dd+"+a);
+			am.setIsbn("isbn:jd+"+a);
 			am.setPrice(22.3+a);
 			am.setOutLine(a+"我爱你中国【亚马逊】");
 			
 			pub.setBookName("love u"+a);
-			pub.setIsbn("isbn:dd+"+a);
+			pub.setIsbn("isbn:am+"+a);
 			pub.setPrice(22.3+a);
 			pub.setOutLine(a+"我爱你中国【中国互动】");
 			
@@ -70,5 +96,4 @@ public class IntegratedTest {
 			pubIntegrated.integrated(pub);
 		}
 	}
-
 }

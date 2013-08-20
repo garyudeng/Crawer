@@ -26,7 +26,8 @@ public class PropertyUtil {
 	public final static String EXTRACT="EXTRACT";
 	public final static String ATTACH_IMAGE_SHOW="ATTACH_IMAGE_SHOW";
 	public final static String COMMENTURL="COMMENTURL";
-
+	public final static String BOOK_DESCIPTION="BOOK_DESCIPTION";  //Amazon图书描述
+	public final static String AUTHOR_TRANSLATOR="AUTHOR_TRANSLATOR";  //Amazon作者信息
 	
 	//property
 	private static Properties p;

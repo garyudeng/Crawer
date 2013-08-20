@@ -9,9 +9,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import bimoku.extract.common.PropertyUtil;
 import bimoku.extract.parser.Parser;
 import bimoku.extract.parser.ParserAmazon;
+import bimoku.extract.parser.ParserDD;
+import bimoku.extract.parser.ParserDouban;
 
-
-public class Main {
+public class Maindouban {
 	
 	private static ApplicationContext ctx = null;
 	private static Parser parser = null;
@@ -29,12 +30,12 @@ public class Main {
 		File[] files = file.listFiles();
 		
 		//创建一个固定大小[10]的线程池
-		ExecutorService pool = Executors.newFixedThreadPool(10);
+		ExecutorService pool = Executors.newFixedThreadPool(2);
 		
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isDirectory()) {
-				String directoryitem = PropertyUtil.getProperty(configPath).getProperty("directory") + File.separator + files[i].getName();
-				Extract extract = new Extract(directoryitem,parser,configPath);
+				String directoryitem = PropertyUtil.getProperty(configPath).getProperty("directory") +  files[i].getName();
+				Extractdouban extract = new Extractdouban(directoryitem,parser,configPath);
 				//把任务放到线程池的处理队列里面，等待处理
 				pool.execute(extract);
 			}
@@ -44,7 +45,7 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		extract("amazonConfig.properties", (ParserAmazon)getContext().getBean("parserAmazon"));
+		extract("doubanConfig.properties", (ParserDouban)getContext().getBean("parserDouban"));
 	}
 	
 }

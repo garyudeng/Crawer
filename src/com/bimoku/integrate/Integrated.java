@@ -7,6 +7,7 @@ import com.bimoku.common.bean.Book;
 import com.bimoku.common.bean.BookDB;
 import com.bimoku.common.bean.BookDD;
 import com.bimoku.common.bean.BookDetail;
+import com.bimoku.util.AllPriceMapper;
 import com.bimoku.util.RelationMapper;
 import com.bimoku.repository.dao.BookDao;
 import com.bimoku.util.filter.FieldFilter;
@@ -79,8 +80,15 @@ public abstract class Integrated {
 		//relationship字段构造！！！！！！
 		//***************************
 		
-		String newRelation = RelationMapper.updateRelation(book, detail);
+		String newRelation = RelationMapper.update(book, detail);
 		book.setRelationship(newRelation);
+		
+		//***************************
+		// （价格更新）
+		//all_price字段构造！！！！！！
+		//***************************
+		String newPrice = AllPriceMapper.update(book, detail);
+		book.setAll_price(newPrice);
 		
 		//***************************
 		//(重复字段择优)

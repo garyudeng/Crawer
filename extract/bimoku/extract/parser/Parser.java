@@ -1,15 +1,13 @@
 package bimoku.extract.parser;
 
-
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
 
+import bimoku.extract.common.exception.ExtractException;
+
 import com.bimoku.common.bean.BookDetail;
 import com.bimoku.integrate.Integrated;
-
-import bimoku.extract.common.PropertyUtil;
-import bimoku.extract.common.exception.ExtractException;
 
 /**
  * 抽取主程序
@@ -41,16 +39,17 @@ public abstract class Parser {
 			e.printStackTrace();
 			return;
 		}
-		//没有抓到书名或者isbn的，都不再进行后续操作
-		if(map.get(PropertyUtil.BOOKNAME) == null || map.get(PropertyUtil.ISBN) == null){
+//		//没有抓到书名或者isbn的，都不再进行后续操作
+		/*if(map.get(PropertyUtil.BOOKNAME) == null || map.get(PropertyUtil.ISBN) == null){
 			throw new ExtractException();
-		}
+		}*/
 		//过滤，精确抽取
 		BookDetail bookDetail = fieldFilter(map);
-		if(bookDetail.getBookName() == null || bookDetail.getIsbn() == null){
+		if(bookDetail.getBookName() == null || bookDetail.getIsbn() == null || bookDetail.getBookName() == "" || bookDetail.getIsbn() == ""){
 			throw new ExtractException();
 		}
 		//数据持久化
+		
 		getIntegratedDao().integrated(bookDetail);
 	}
 	

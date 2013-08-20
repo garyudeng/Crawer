@@ -9,7 +9,6 @@ import bimoku.extract.parser.Parser;
 
 import com.bimoku.util.FileUtils;
 
-
 /**
  * 抽取的线程
  * 
@@ -17,39 +16,25 @@ import com.bimoku.util.FileUtils;
  * @author LPM 跟新优化代码，，使用实现runnable的方法，方便使用线程池
  *
  */
-public class Extract implements Runnable{
+public class Extractdouban implements Runnable{
 
 	private String directory;
 	private Parser parser;
 	private String configPath;
 
-	public Extract(String directory,Parser parser,String configPath) {
+	public Extractdouban(String directory,Parser parser,String configPath) {
 		this.directory = directory;
 		this.parser = parser;
-		this.configPath = configPath;
+		this.configPath  = configPath;
 	}
 
 	public void run() {
-		System.out.println(directory);
-		File[] list = FileUtils.getFileslist(directory);
 		
-		ArrayList<String> directories = new ArrayList<String>();//第二层目录存放在这里
-		String directorytemp = "";
-		
-		//读取第二层目录
-		for (int i = 0; i < list.length; i++) {
-			if (list[i].isDirectory()) {
-				directorytemp = directory + "/" + list[i].getName();
-				directories.add(directorytemp);
-			}
-		}
-		
-		while (!directories.isEmpty()) {
-			//每次从directories取出一个目录，在这个目录的content下面解析
-			String directorylast = directories.remove(0) + "/content";//第三层目录文件夹
-
+		while (!directory.isEmpty()) {
+			
+			
 			ArrayList<String> htmllist = new ArrayList<String>();//所有的html文件
-			File[] files = FileUtils.getFileslist(directorylast);//获取所有文件
+			File[] files = FileUtils.getFileslist(directory);//获取所有文件
 			
 			if (files == null || files.length < 1) {
 				break;//当前目录没有文件，处理完毕了
@@ -63,7 +48,7 @@ public class Extract implements Runnable{
 			
 			while (!htmllist.isEmpty()) {
 				//从文件列表中取出一则数据，取完，结束循环
-				String filepath = directorylast + "/" + htmllist.remove(0);
+				String filepath = directory + "/" + htmllist.remove(0);
 				try {
 					parser.parser(filepath);//调用相关的抽取方法
 				}catch(ExtractException e) {

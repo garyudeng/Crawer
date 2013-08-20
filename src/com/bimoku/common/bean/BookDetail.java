@@ -9,6 +9,7 @@ import javax.persistence.Id;
 
 import org.codehaus.jettison.json.JSONException;
 
+import com.bimoku.util.AllPriceMapper;
 import com.bimoku.util.RelationMapper;
 
 /**
@@ -151,7 +152,9 @@ public abstract class BookDetail implements Serializable{
 		b.setTranslator(detail.getTranslator());
 		b.setAuthorIntro(detail.getAuthorIntro());
 		b.setCatelog(detail.getCatelog());
+		
 		b.setRelationship(RelationMapper.builtWithClass(detail));
+		b.setAll_price(AllPriceMapper.builtWithClass(detail));
 		
 		return b;
 	}
