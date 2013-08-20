@@ -42,7 +42,18 @@ import com.bimoku.persistence.exception.DaoException;
 import com.bimoku.util.db.BeanUtilsBean;
 
 
-
+/**
+ * 基础数据操作mysql实现
+ * 包含：
+ * 批量增删改查
+ * 获取单一类型（int,long）类型的值
+ * 基本数据查询
+ * @date 2013-8-20
+ * @version v0.1.2[last version]
+ * @author LPM
+ * @param <T>
+ * @param <ID>
+ */
 public abstract class BaseDaoMysqlImpl<T, ID extends Serializable> extends
 		JdbcDaoSupport implements BaseDao<T, ID> {
 	public final Log log = LogFactory.getLog(this.getClass());

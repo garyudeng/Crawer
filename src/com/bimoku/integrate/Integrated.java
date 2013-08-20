@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bimoku.common.bean.Book;
 import com.bimoku.common.bean.BookDB;
+import com.bimoku.common.bean.BookDD;
 import com.bimoku.common.bean.BookDetail;
 import com.bimoku.util.RelationMapper;
 import com.bimoku.repository.dao.BookDao;
@@ -100,6 +101,10 @@ public abstract class Integrated {
 			book.setOutline(detail.getOutLine());
 			book.setCatelog(detail.getCatelog());
 			//....
+		}
+		if(detail instanceof BookDD){
+			//价格考虑以当当的价格作为官方价格
+			book.setPrice(detail.getPrice());
 		}
 		
 		book = filterFileds(book,detail);

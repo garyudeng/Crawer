@@ -80,7 +80,7 @@ public abstract class FieldFilter {
 	 */
 	private static String longestMatch(String str1, String str2) {
 		if(str1==null||str1.equals("")||str2==null||str2.equals("")){
-			return "";
+			return "暂无描述";
 		}
 		// 使用最短的字符串去分割，可以实现效率更优。
 		String bigStr = str1.length() > str2.length() ? str1 : str2;
