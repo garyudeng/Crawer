@@ -45,6 +45,8 @@ public abstract class Integrated {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+			//给集成数据枷锁
+			Book.lockBook(book, det);
 			//不存在
 			bookDao.save(book);
 		} else {
@@ -53,7 +55,9 @@ public abstract class Integrated {
 				Book bbk = bookDao.getBookByISBN(book.getIsbn());
 				//数据集成（对象关系映射、重复性校验、重复字段择优）
 				bbk = adapteData(bbk, det);
-				//存在，跟新就好！！！！
+				//给集成数据枷锁
+				Book.lockBook(book, det);
+				//存在，更新就好！！！！
 				bookDao.update(bbk);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -74,7 +78,7 @@ public abstract class Integrated {
 	 * @throws JSONException
 	 */
 	private Book adapteData(Book book,BookDetail detail) throws JSONException{
-	
+		
 		//***************************
 		// （对象关系映射）
 		//relationship字段构造！！！！！！
@@ -93,8 +97,13 @@ public abstract class Integrated {
 		//***************************
 		//(重复字段择优)
 		//使用其他算法进行字段选取1111
+		//数据编辑条件
+		//如果当前书籍已经枷锁，（说明已经被豆瓣操作过，）
+		//则只需要更新关系和价格
 		//***************************
-		book = filter(book,detail);
+		if(!Book.isLock(book)){
+			book = filter(book,detail);
+		}
 		
 		return book;
 	}
@@ -141,7 +150,6 @@ public abstract class Integrated {
 		return book;
 	}
 	
-
 	/**
 	 * 明细数据插入
 	 * @param detail

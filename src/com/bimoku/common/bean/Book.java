@@ -39,6 +39,8 @@ public class Book implements Serializable{
 	private String authorIntro;//作者简介<215
 	private String relationship;//关系列，存放：{'dd':'20','amazon':'231',}<50
 	
+	private Integer islock;//如果该数据被豆瓣网操作过，则被标记成枷锁状态，值为1，其他数据则不能操作
+	
 	public Book(){}
 	
 	@Id
@@ -195,6 +197,14 @@ public class Book implements Serializable{
 		this.pub_price = pub_price;
 	}
 
+	public Integer getIslock() {
+		return islock;
+	}
+
+	public void setIslock(Integer islock) {
+		this.islock = islock;
+	}
+
 	@Override
 	public String toString() {
 		return "Book [id=" + id + ", uuId=" + uuId + ", isbn=" + isbn
@@ -206,7 +216,40 @@ public class Book implements Serializable{
 				+ ", price=" + price + ", pub_price=" + pub_price
 				+ ", all_price=" + all_price + ", catelog=" + catelog
 				+ ", authorIntro=" + authorIntro + ", relationship="
-				+ relationship + "]";
+				+ relationship +", islock=" + islock + "]";
 	}
 	
+	/**
+	 * 锁定书籍信息
+	 * @param book
+	 * @param det
+	 * @return
+	 */
+	public static Book lockBook(Book book,BookDetail det){
+		//如果图书信息来自豆瓣，则设置锁定状态
+		if(det instanceof BookDB)
+			book.setIslock(1);
+		return book;
+	}
+	
+	/**
+	 * 书籍信息解锁
+	 * @param book
+	 * @param det
+	 * @return
+	 */
+	public static  Book unLockBook(Book book){
+		book.setIslock(0);
+		return book;
+	}
+	/**
+	 * 获取书籍集成状态
+	 * @param book
+	 * @return
+	 */
+	public static boolean isLock(Book book){
+		if(book.getIslock() != null && book.getIslock() != 0)
+			return true;
+		return false;
+	}
 }

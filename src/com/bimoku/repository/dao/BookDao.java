@@ -14,6 +14,8 @@ import com.bimoku.persistence.dao.impl.BaseDaoMysqlImpl;
 
 /**
  * book对象基本操作
+ * @date 2013-8-20
+ * @version v0.1.2[last version]
  * @author LPM
  *
  */

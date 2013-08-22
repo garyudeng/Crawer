@@ -38,7 +38,7 @@ public class IntegratedTest {
 			BookAmazon am = new BookAmazon();
 			BookPub pub = new BookPub();
 			
-			/**
+			
 			dd.setBookName("love u"+a);
 			dd.setIsbn("isbn:dd+"+a);
 			dd.setPrice(22.3+a);
@@ -63,7 +63,15 @@ public class IntegratedTest {
 			pub.setIsbn("isbn:pub+"+a);
 			pub.setPrice(22.3+a);
 			pub.setOutLine(a+"我爱你中国【中国互动】");
-			**/
+			
+			//==================
+			ddIntegrated.integrated(dd);
+			jdIntegrated.integrated(jd);
+			amazonIntegrated.integrated(am);
+			pubIntegrated.integrated(pub);
+			dbIntegrated.integrated(db);
+			//==================
+			
 			dd.setBookName("love u"+a);
 			dd.setIsbn("isbn:pub+"+a);
 			dd.setPrice(22.3+a);
@@ -90,10 +98,10 @@ public class IntegratedTest {
 			pub.setOutLine(a+"我爱你中国【中国互动】");
 			
 			ddIntegrated.integrated(dd);
-			dbIntegrated.integrated(db);
 			jdIntegrated.integrated(jd);
 			amazonIntegrated.integrated(am);
 			pubIntegrated.integrated(pub);
+			dbIntegrated.integrated(db);
 		}
 	}
 }
