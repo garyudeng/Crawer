@@ -74,13 +74,17 @@ public abstract class FieldFilter {
 	
 	/**
 	 * 找出两个字符串中匹配最长的字符串。
-	 * 
+	 * @update 2013-8-27
+	 * ！！！！！！当两个字段进来，一个字段唯恐或者为空时，而另一字段不空时，取不空字段！！！！！！
 	 * @param fields
 	 * @return
 	 */
 	private static String longestMatch(String str1, String str2) {
-		if(str1==null||str1.equals("")||str2==null||str2.equals("")){
-			return "暂无描述";
+		if((str1==null||str1.equals("")) && str2!=null && !str2.equals("")){
+			return str2;
+		}
+		if((str2==null||str2.equals("")) && str1!=null && !str1.equals("")){
+			return str1;
 		}
 		// 使用最短的字符串去分割，可以实现效率更优。
 		String bigStr = str1.length() > str2.length() ? str1 : str2;
@@ -155,7 +159,7 @@ public abstract class FieldFilter {
 				"《朱镕基上海讲话实录》编辑组 编,人民出版社,9787010124025"};
 		String[] arr2 = {
 				"dongcai当当网图书[csaacascacbaksbcakcabkcica好熟啊 啊]",
-				"111当当网图书。。。。哈哈"
+				null
 		};
 		System.out.println(longestMatch(arr2));
 		//String[] arr = {"好声音，中国","中国好声音","中国，好声音"};

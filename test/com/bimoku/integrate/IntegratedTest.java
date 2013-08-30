@@ -40,19 +40,20 @@ public class IntegratedTest {
 			
 			
 			dd.setBookName("love u"+a);
-			dd.setIsbn("isbn:dd+"+a);
+			dd.setIsbn("isbn:am+"+a);
 			dd.setPrice(22.3+a);
 			dd.setOutLine(a+"我爱你中国【当当】");
 			
 			db.setBookName("love u"+a);
-			db.setIsbn("isbn:db+"+a);
+			db.setIsbn("isbn:jd+"+a);
 			db.setPrice(22.3+a);
 			db.setOutLine(a+"我爱你中国【豆瓣】");
 			
 			jd.setBookName("love u"+a);
 			jd.setIsbn("isbn:jd+"+a);
 			jd.setPrice(22.3+a);
-			jd.setOutLine(a+"我爱你中国【京东】");
+			jd.setOutLine(null);
+			jd.setCover_pic("c:/img/aa.jpg");
 			
 			am.setBookName("love u"+a);
 			am.setIsbn("isbn:am+"+a);
@@ -60,7 +61,7 @@ public class IntegratedTest {
 			am.setOutLine(a+"我爱你中国【亚马逊】");
 			
 			pub.setBookName("love u"+a);
-			pub.setIsbn("isbn:pub+"+a);
+			pub.setIsbn("isbn:jd+"+a);
 			pub.setPrice(22.3+a);
 			pub.setOutLine(a+"我爱你中国【中国互动】");
 			

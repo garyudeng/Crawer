@@ -33,6 +33,7 @@ public class Book implements Serializable{
 	private Double price;//单价
 	private Double pub_price;//定价
 	private String all_price;//站点比价
+	private String cover_pic;//封面图片
 	
 	
 	private String catelog;//分类<50
@@ -203,6 +204,13 @@ public class Book implements Serializable{
 
 	public void setIslock(Integer islock) {
 		this.islock = islock;
+	}
+	public String getCover_pic() {
+		return cover_pic;
+	}
+
+	public void setCover_pic(String cover_pic) {
+		this.cover_pic = cover_pic;
 	}
 
 	@Override

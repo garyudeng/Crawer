@@ -152,6 +152,7 @@ public abstract class BookDetail implements Serializable{
 		b.setTranslator(detail.getTranslator());
 		b.setAuthorIntro(detail.getAuthorIntro());
 		b.setCatelog(detail.getCatelog());
+		b.setCover_pic(detail.getCover_pic());
 		
 		b.setRelationship(RelationMapper.builtWithClass(detail));
 		b.setAll_price(AllPriceMapper.builtWithClass(detail));

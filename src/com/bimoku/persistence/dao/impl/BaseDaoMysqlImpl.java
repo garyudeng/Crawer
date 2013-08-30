@@ -133,7 +133,9 @@ public abstract class BaseDaoMysqlImpl<T, ID extends Serializable> extends
 			return new ArrayList<T>();
 		if (values == null)
 			values = new ArrayList<Object>();
-		logger.info("sql : " + sql + " values:" + values);
+		if (log.isDebugEnabled()) {
+			log.debug("sql : " + sql + " values:" + values);
+		}
 		List<T> list = this.getJdbcTemplate().query(sql, values.toArray(),
 				new BeanPropertyRowMapper<T>(this.persistentClass));
 		return list == null ? new ArrayList<T>() : list;
